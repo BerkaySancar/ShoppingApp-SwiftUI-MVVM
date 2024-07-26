@@ -8,12 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		B103D8192C542BE6000FA048 /* ShoppingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B103D8182C542BE6000FA048 /* ShoppingApp.swift */; };
-		B103D81B2C542BE6000FA048 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B103D81A2C542BE6000FA048 /* ContentView.swift */; };
+		B103D81B2C542BE6000FA048 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B103D81A2C542BE6000FA048 /* LoginView.swift */; };
 		B103D81D2C542BE7000FA048 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B103D81C2C542BE7000FA048 /* Assets.xcassets */; };
 		B103D8202C542BE7000FA048 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B103D81F2C542BE7000FA048 /* Preview Assets.xcassets */; };
 		B103D82A2C542BE7000FA048 /* ShoppingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B103D8292C542BE7000FA048 /* ShoppingTests.swift */; };
 		B103D8342C542BE7000FA048 /* ShoppingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B103D8332C542BE7000FA048 /* ShoppingUITests.swift */; };
 		B103D8362C542BE7000FA048 /* ShoppingUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B103D8352C542BE7000FA048 /* ShoppingUITestsLaunchTests.swift */; };
+		B197C76A2C545D9700548C7A /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197C7692C545D9700548C7A /* LoginViewModel.swift */; };
+		B197C76E2C545EB200548C7A /* TextField+Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197C76D2C545EB200548C7A /* TextField+Modifier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +38,7 @@
 /* Begin PBXFileReference section */
 		B103D8152C542BE6000FA048 /* Shopping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shopping.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B103D8182C542BE6000FA048 /* ShoppingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingApp.swift; sourceTree = "<group>"; };
-		B103D81A2C542BE6000FA048 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B103D81A2C542BE6000FA048 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		B103D81C2C542BE7000FA048 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B103D81F2C542BE7000FA048 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B103D8252C542BE7000FA048 /* ShoppingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShoppingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -45,6 +47,8 @@
 		B103D8332C542BE7000FA048 /* ShoppingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingUITests.swift; sourceTree = "<group>"; };
 		B103D8352C542BE7000FA048 /* ShoppingUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		B197C7632C5436CD00548C7A /* DummyAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DummyAPI; sourceTree = "<group>"; };
+		B197C7692C545D9700548C7A /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		B197C76D2C545EB200548C7A /* TextField+Modifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextField+Modifier.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +103,7 @@
 				B103D8422C542BF5000FA048 /* App */,
 				B103D8442C542C0F000FA048 /* Resources */,
 				B197C7642C543C8300548C7A /* Extensions */,
+				B197C76B2C545E9900548C7A /* Helpers */,
 				B103D8432C542C04000FA048 /* Core */,
 				B103D81E2C542BE7000FA048 /* Preview Content */,
 			);
@@ -141,7 +146,7 @@
 		B103D8432C542C04000FA048 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				B103D81A2C542BE6000FA048 /* ContentView.swift */,
+				B197C7672C545D7900548C7A /* Auth */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -159,6 +164,39 @@
 			children = (
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B197C7672C545D7900548C7A /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				B197C7682C545D8300548C7A /* Login */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		B197C7682C545D8300548C7A /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				B103D81A2C542BE6000FA048 /* LoginView.swift */,
+				B197C7692C545D9700548C7A /* LoginViewModel.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		B197C76B2C545E9900548C7A /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				B197C76C2C545EA100548C7A /* ViewModifiers */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		B197C76C2C545EA100548C7A /* ViewModifiers */ = {
+			isa = PBXGroup;
+			children = (
+				B197C76D2C545EB200548C7A /* TextField+Modifier.swift */,
+			);
+			path = ViewModifiers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -295,8 +333,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B103D81B2C542BE6000FA048 /* ContentView.swift in Sources */,
+				B103D81B2C542BE6000FA048 /* LoginView.swift in Sources */,
 				B103D8192C542BE6000FA048 /* ShoppingApp.swift in Sources */,
+				B197C76E2C545EB200548C7A /* TextField+Modifier.swift in Sources */,
+				B197C76A2C545D9700548C7A /* LoginViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
