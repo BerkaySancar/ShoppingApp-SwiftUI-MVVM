@@ -21,7 +21,7 @@ public enum ServiceError: Error {
         case .invalidURL:
             return "Something went wrong."
         case .invalidResponse:
-            return "Invalid response."
+            return "The request failed. Try again."
         case .requestFailed:
             return "Request failed."
         case .invalidURLRequest:

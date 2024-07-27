@@ -30,7 +30,7 @@ final class NetworkManager {
     func request<T: Codable>(_ request: URLRequestConvertible, type: T.Type, completion: @escaping (Result<T?, ServiceError>) -> Void) {
         if isReachable {
             URLSession.shared.dataTask(with: request.urlRequest()) { (data, response, error) in
-                if let error {
+                if error != nil {
                     completion(.failure(.invalidURLRequest))
                 }
                 
