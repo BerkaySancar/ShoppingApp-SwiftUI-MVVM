@@ -14,6 +14,7 @@
 		B103D82A2C542BE7000FA048 /* ShoppingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B103D8292C542BE7000FA048 /* ShoppingTests.swift */; };
 		B103D8342C542BE7000FA048 /* ShoppingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B103D8332C542BE7000FA048 /* ShoppingUITests.swift */; };
 		B103D8362C542BE7000FA048 /* ShoppingUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B103D8352C542BE7000FA048 /* ShoppingUITestsLaunchTests.swift */; };
+		B1405C7E2C54F00C0097C774 /* DummyAPI in Frameworks */ = {isa = PBXBuildFile; productRef = B1405C7D2C54F00C0097C774 /* DummyAPI */; };
 		B197C76A2C545D9700548C7A /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197C7692C545D9700548C7A /* LoginViewModel.swift */; };
 		B197C76E2C545EB200548C7A /* TextField+Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197C76D2C545EB200548C7A /* TextField+Modifier.swift */; };
 /* End PBXBuildFile section */
@@ -56,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1405C7E2C54F00C0097C774 /* DummyAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +86,7 @@
 				B103D8282C542BE7000FA048 /* ShoppingTests */,
 				B103D8322C542BE7000FA048 /* ShoppingUITests */,
 				B103D8162C542BE6000FA048 /* Products */,
+				B1405C7C2C54EFFA0097C774 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -159,6 +162,13 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		B1405C7C2C54EFFA0097C774 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B197C7642C543C8300548C7A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -216,6 +226,7 @@
 			);
 			name = Shopping;
 			packageProductDependencies = (
+				B1405C7D2C54F00C0097C774 /* DummyAPI */,
 			);
 			productName = Shopping;
 			productReference = B103D8152C542BE6000FA048 /* Shopping.app */;
@@ -676,6 +687,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B1405C7D2C54F00C0097C774 /* DummyAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DummyAPI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B103D80D2C542BE6000FA048 /* Project object */;
 }
