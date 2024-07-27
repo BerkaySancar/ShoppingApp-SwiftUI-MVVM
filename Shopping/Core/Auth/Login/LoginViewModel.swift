@@ -13,26 +13,38 @@ protocol LoginViewModelProtocol {
     func signUpTapped()
 }
 
-final class LoginViewModel: ObservableObject, LoginViewModelProtocol {
+final class LoginViewModel: ObservableObject {
     
+    //Dependencies
     private let service: DummyAPIServiceProtocol
     
+    //Published variables
     @Published var username: String = ""
     @Published var password: String = ""
     @Published var isLoggedIn = false
     @Published var isPresentAlert = false
     @Published var showSignup = false
+    @Published var showActivity = false
+    
+    //Variables
     private(set) var errorMessage: String = ""
     
+    //Init
     init(service: DummyAPIServiceProtocol = DummyAPIService()) {
         self.service = service
     }
+}
+
+//MARK: ViewModel Protocols
+extension LoginViewModel: LoginViewModelProtocol {
     
     func loginTapped() {
         if !username.isEmpty && !password.isEmpty {
+            self.showActivity = true
             service.login(username: self.username, password: self.password) { [weak self] results in
                 guard let self else { return }
                 DispatchQueue.main.async {
+                    self.showActivity = false
                     switch results {
                     case .success(_):
                         self.isLoggedIn.toggle()

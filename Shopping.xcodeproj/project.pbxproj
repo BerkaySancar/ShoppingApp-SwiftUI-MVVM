@@ -15,6 +15,10 @@
 		B103D8342C542BE7000FA048 /* ShoppingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B103D8332C542BE7000FA048 /* ShoppingUITests.swift */; };
 		B103D8362C542BE7000FA048 /* ShoppingUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B103D8352C542BE7000FA048 /* ShoppingUITestsLaunchTests.swift */; };
 		B1405C7E2C54F00C0097C774 /* DummyAPI in Frameworks */ = {isa = PBXBuildFile; productRef = B1405C7D2C54F00C0097C774 /* DummyAPI */; };
+		B1405C832C5522650097C774 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1405C822C5522650097C774 /* SignUpView.swift */; };
+		B1405C852C55229E0097C774 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1405C842C55229E0097C774 /* SignUpViewModel.swift */; };
+		B1405C882C552AEA0097C774 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1405C872C552AEA0097C774 /* AppColor.swift */; };
+		B1405C8B2C553E330097C774 /* CustomProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1405C8A2C553E330097C774 /* CustomProgressView.swift */; };
 		B197C76A2C545D9700548C7A /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197C7692C545D9700548C7A /* LoginViewModel.swift */; };
 		B197C76E2C545EB200548C7A /* TextField+Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197C76D2C545EB200548C7A /* TextField+Modifier.swift */; };
 /* End PBXBuildFile section */
@@ -47,6 +51,10 @@
 		B103D82F2C542BE7000FA048 /* ShoppingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShoppingUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B103D8332C542BE7000FA048 /* ShoppingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingUITests.swift; sourceTree = "<group>"; };
 		B103D8352C542BE7000FA048 /* ShoppingUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		B1405C822C5522650097C774 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		B1405C842C55229E0097C774 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		B1405C872C552AEA0097C774 /* AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColor.swift; sourceTree = "<group>"; };
+		B1405C8A2C553E330097C774 /* CustomProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomProgressView.swift; sourceTree = "<group>"; };
 		B197C7632C5436CD00548C7A /* DummyAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DummyAPI; sourceTree = "<group>"; };
 		B197C7692C545D9700548C7A /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B197C76D2C545EB200548C7A /* TextField+Modifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextField+Modifier.swift"; sourceTree = "<group>"; };
@@ -107,6 +115,7 @@
 				B103D8442C542C0F000FA048 /* Resources */,
 				B197C7642C543C8300548C7A /* Extensions */,
 				B197C76B2C545E9900548C7A /* Helpers */,
+				B1405C892C553E200097C774 /* CustomViews */,
 				B103D8432C542C04000FA048 /* Core */,
 				B103D81E2C542BE7000FA048 /* Preview Content */,
 			);
@@ -169,6 +178,31 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B1405C812C5522590097C774 /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				B1405C822C5522650097C774 /* SignUpView.swift */,
+				B1405C842C55229E0097C774 /* SignUpViewModel.swift */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		B1405C862C552AE00097C774 /* Color */ = {
+			isa = PBXGroup;
+			children = (
+				B1405C872C552AEA0097C774 /* AppColor.swift */,
+			);
+			path = Color;
+			sourceTree = "<group>";
+		};
+		B1405C892C553E200097C774 /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				B1405C8A2C553E330097C774 /* CustomProgressView.swift */,
+			);
+			path = CustomViews;
+			sourceTree = "<group>";
+		};
 		B197C7642C543C8300548C7A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -179,6 +213,7 @@
 		B197C7672C545D7900548C7A /* Auth */ = {
 			isa = PBXGroup;
 			children = (
+				B1405C812C5522590097C774 /* SignUp */,
 				B197C7682C545D8300548C7A /* Login */,
 			);
 			path = Auth;
@@ -196,6 +231,7 @@
 		B197C76B2C545E9900548C7A /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				B1405C862C552AE00097C774 /* Color */,
 				B197C76C2C545EA100548C7A /* ViewModifiers */,
 			);
 			path = Helpers;
@@ -345,8 +381,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				B103D81B2C542BE6000FA048 /* LoginView.swift in Sources */,
+				B1405C832C5522650097C774 /* SignUpView.swift in Sources */,
 				B103D8192C542BE6000FA048 /* ShoppingApp.swift in Sources */,
+				B1405C882C552AEA0097C774 /* AppColor.swift in Sources */,
 				B197C76E2C545EB200548C7A /* TextField+Modifier.swift in Sources */,
+				B1405C852C55229E0097C774 /* SignUpViewModel.swift in Sources */,
+				B1405C8B2C553E330097C774 /* CustomProgressView.swift in Sources */,
 				B197C76A2C545D9700548C7A /* LoginViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

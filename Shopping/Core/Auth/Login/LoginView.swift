@@ -12,20 +12,27 @@ struct LoginView: View {
     @StateObject private var viewModel = LoginViewModel()
     
     var body: some View {
+        NavigationStack {
             ZStack {
                 TopView()
                 InputView()
+                
+                if viewModel.showActivity {
+                    CustomProgressView()
+                }
             }
-            .background(.gray.opacity(0.20))
-            .fullScreenCover(isPresented: $viewModel.isLoggedIn) {
-                Text("Berkay")
+            .background(Color.appGrayBackground)
+            .navigationDestination(isPresented: $viewModel.isLoggedIn) {
+                
             }
-            .fullScreenCover(isPresented: $viewModel.showSignup) {
-                Text("Signup")
+            .navigationDestination(isPresented: $viewModel.showSignup) {
+                SignUpView()
+                    .navigationBarBackButtonHidden()
             }
             .alert(isPresented: $viewModel.isPresentAlert) {
                 Alert(title: Text(viewModel.errorMessage))
             }
+        }
     }
 }
 
@@ -37,12 +44,12 @@ extension LoginView {
             ZStack {
                 RoundedRectangle(cornerRadius: 30)
                     .ignoresSafeArea()
-                    .foregroundStyle(.orange.opacity(0.75))
+                    .foregroundStyle(Color.appPrimaryColor)
                     .frame(width: proxy.size.width, height: proxy.size.height / 2.4)
                 
                 Image(systemName: "cart")
                     .font(.system(size: 100))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.background)
             }
         }
     }
@@ -70,9 +77,9 @@ extension LoginView {
                 ZStack {
                     RoundedRectangle(cornerRadius: 8)
                         .frame(width: 120, height: 48)
-                        .foregroundStyle(.orange.opacity(1))
+                        .foregroundStyle(Color.appPrimaryColor)
                     Text("Login")
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.background)
                         .font(.title3)
                 }
             }
@@ -93,7 +100,7 @@ extension LoginView {
         }
         .padding(.horizontal)
         .padding(.vertical)
-        .background(.white)
+        .background(.background)
         .clipShape(RoundedRectangle(cornerRadius: 20))
         .padding()
     }
