@@ -17,11 +17,13 @@ struct CustomProgressView: View {
                 Text("Shopping App")
                 ProgressView()
                     .controlSize(.large)
-                Text("......................")
             }
             .padding()
             .background(.background)
             .clipShape(RoundedRectangle(cornerRadius: 18))
+            .overlay(RoundedRectangle(cornerRadius: 18)
+                .stroke(lineWidth: 1)
+                .foregroundStyle(.gray))
         }
         .allowsHitTesting(true)
     }
