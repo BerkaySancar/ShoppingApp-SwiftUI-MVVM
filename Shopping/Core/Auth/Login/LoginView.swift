@@ -23,7 +23,8 @@ struct LoginView: View {
             }
             .background(Color.appGrayBackground)
             .navigationDestination(isPresented: $viewModel.isLoggedIn) {
-                
+                MainTabbarView()
+                    .navigationBarBackButtonHidden()
             }
             .navigationDestination(isPresented: $viewModel.showSignup) {
                 SignUpView()
