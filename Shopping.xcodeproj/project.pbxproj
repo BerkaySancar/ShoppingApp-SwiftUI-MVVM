@@ -22,6 +22,8 @@
 		B1405C8E2C555A3B0097C774 /* MainTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1405C8D2C555A3B0097C774 /* MainTabBar.swift */; };
 		B1405C912C555A660097C774 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1405C902C555A660097C774 /* HomeView.swift */; };
 		B1405C942C555AB00097C774 /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1405C932C555AB00097C774 /* CartView.swift */; };
+		B1405C972C555EF60097C774 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1405C962C555EF60097C774 /* SplashView.swift */; };
+		B1405C9A2C555FE80097C774 /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1405C992C555FE80097C774 /* SplashViewModel.swift */; };
 		B197C76A2C545D9700548C7A /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197C7692C545D9700548C7A /* LoginViewModel.swift */; };
 		B197C76E2C545EB200548C7A /* TextField+Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197C76D2C545EB200548C7A /* TextField+Modifier.swift */; };
 /* End PBXBuildFile section */
@@ -61,6 +63,8 @@
 		B1405C8D2C555A3B0097C774 /* MainTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBar.swift; sourceTree = "<group>"; };
 		B1405C902C555A660097C774 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B1405C932C555AB00097C774 /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
+		B1405C962C555EF60097C774 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		B1405C992C555FE80097C774 /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
 		B197C7632C5436CD00548C7A /* DummyAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DummyAPI; sourceTree = "<group>"; };
 		B197C7692C545D9700548C7A /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B197C76D2C545EB200548C7A /* TextField+Modifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextField+Modifier.swift"; sourceTree = "<group>"; };
@@ -164,10 +168,11 @@
 		B103D8432C542C04000FA048 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				B1405C952C555EEB0097C774 /* Splash */,
+				B197C7672C545D7900548C7A /* Auth */,
 				B1405C8C2C555A2B0097C774 /* MainTabBar */,
 				B1405C922C555AAA0097C774 /* CartView */,
 				B1405C8F2C555A510097C774 /* HomeView */,
-				B197C7672C545D7900548C7A /* Auth */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -234,6 +239,15 @@
 				B1405C932C555AB00097C774 /* CartView.swift */,
 			);
 			path = CartView;
+			sourceTree = "<group>";
+		};
+		B1405C952C555EEB0097C774 /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+				B1405C962C555EF60097C774 /* SplashView.swift */,
+				B1405C992C555FE80097C774 /* SplashViewModel.swift */,
+			);
+			path = Splash;
 			sourceTree = "<group>";
 		};
 		B197C7642C543C8300548C7A /* Extensions */ = {
@@ -418,8 +432,10 @@
 				B1405C832C5522650097C774 /* SignUpView.swift in Sources */,
 				B1405C912C555A660097C774 /* HomeView.swift in Sources */,
 				B103D8192C542BE6000FA048 /* ShoppingApp.swift in Sources */,
+				B1405C972C555EF60097C774 /* SplashView.swift in Sources */,
 				B1405C882C552AEA0097C774 /* AppColor.swift in Sources */,
 				B1405C942C555AB00097C774 /* CartView.swift in Sources */,
+				B1405C9A2C555FE80097C774 /* SplashViewModel.swift in Sources */,
 				B197C76E2C545EB200548C7A /* TextField+Modifier.swift in Sources */,
 				B1405C852C55229E0097C774 /* SignUpViewModel.swift in Sources */,
 				B1405C8B2C553E330097C774 /* CustomProgressView.swift in Sources */,
