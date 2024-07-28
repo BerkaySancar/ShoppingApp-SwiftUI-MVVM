@@ -17,6 +17,8 @@ public protocol DummyAPIServiceProtocol {
     func login(username: String,
                password: String,
                completion: @escaping (Result<LoginDTO?, ServiceError>) -> Void)
+    
+    func getProducts(completion: @escaping (Result<[Product]?, ServiceError>) -> Void)
 }
 
 @available(iOS 15.0, *)
@@ -51,6 +53,17 @@ public final class DummyAPIService: DummyAPIServiceProtocol {
             switch results {
             case .success(let success):
                 completion(.success(success))
+            case .failure(let failure):
+                completion(.failure(failure))
+            }
+        }
+    }
+    
+    public func getProducts(completion: @escaping (Result<[Product]?, ServiceError>) -> Void) {
+        networkManager.request(DummyAPI.products, type: Products.self) { results in
+            switch results {
+            case .success(let success):
+                completion(.success(success?.products))
             case .failure(let failure):
                 completion(.failure(failure))
             }
