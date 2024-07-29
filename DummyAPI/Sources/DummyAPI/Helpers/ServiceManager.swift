@@ -9,7 +9,7 @@ import Foundation
 import SystemConfiguration
 
 @available(iOS 15.0, *)
-final class NetworkManager {
+final class ServiceManager {
     
     private let decoder = JSONDecoder()
     
