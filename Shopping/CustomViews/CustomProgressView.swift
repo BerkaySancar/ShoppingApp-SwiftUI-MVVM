@@ -8,27 +8,31 @@
 import SwiftUI
 
 struct CustomProgressView: View {
+    
+    @Binding var isVisible: Bool
+    
     var body: some View {
-        ZStack {
-            Color.black
-                .ignoresSafeArea()
-                .blur(radius: 500)
-            VStack {
-                Text("Shopping App")
-                ProgressView()
-                    .controlSize(.large)
+        if isVisible {
+            ZStack {
+                Color.black
+                    .ignoresSafeArea()
+                    .blur(radius: 500)
+                VStack {
+                    ProgressView()
+                        .controlSize(.regular)
+                }
+                .padding()
+                .background(.background)
+                .clipShape(RoundedRectangle(cornerRadius: 18))
+                .overlay(RoundedRectangle(cornerRadius: 18)
+                    .stroke(lineWidth: 1)
+                    .foregroundStyle(.gray))
             }
-            .padding()
-            .background(.background)
-            .clipShape(RoundedRectangle(cornerRadius: 18))
-            .overlay(RoundedRectangle(cornerRadius: 18)
-                .stroke(lineWidth: 1)
-                .foregroundStyle(.gray))
+            .allowsHitTesting(true)
         }
-        .allowsHitTesting(true)
     }
 }
 
 #Preview {
-    CustomProgressView()
+    CustomProgressView(isVisible: .constant(true))
 }

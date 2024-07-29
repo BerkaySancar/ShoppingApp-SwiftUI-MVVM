@@ -22,9 +22,7 @@ struct SignUpView: View {
                 BottomView()
             }
             
-            if viewModel.showActivity {
-                CustomProgressView()
-            }
+            CustomProgressView(isVisible: $viewModel.showActivity)
         }
         .background(Color.appGrayBackground)
         .alert(isPresented: $viewModel.showAlert) {

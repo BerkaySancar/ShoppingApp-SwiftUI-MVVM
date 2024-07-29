@@ -16,10 +16,7 @@ struct LoginView: View {
             ZStack {
                 TopView()
                 InputView()
-                
-                if viewModel.showActivity {
-                    CustomProgressView()
-                }
+                CustomProgressView(isVisible: $viewModel.showActivity)
             }
             .background(Color.appGrayBackground)
             .navigationDestination(isPresented: $viewModel.isLoggedIn) {
