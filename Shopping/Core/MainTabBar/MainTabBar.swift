@@ -38,12 +38,16 @@ struct MainTabbarView: View {
     
     @State var selectedTab = 0
     
+    init() {
+        UITabBar.appearance().isHidden = true
+    }
+    
     var body: some View {
         ZStack(alignment: .bottom){
             TabView(selection: $selectedTab) {
                 HomeView()
                     .tag(0)
-                
+
                 CartView()
                     .tag(1)
             }
@@ -68,7 +72,6 @@ struct MainTabbarView: View {
     }
 }
 
-
 extension MainTabbarView {
     func CustomTabItem(imageName: String, title: String, isActive: Bool) -> some View {
         HStack(spacing: 10){
@@ -85,8 +88,8 @@ extension MainTabbarView {
             }
             Spacer()
         }
-        .frame(width: isActive ? 280 : 60, height: 60)
-        .background(isActive ? .appOrange : .clear)
+        .frame(width: isActive ? 160 : 60, height: 60)
+        .background(isActive ? .orange : .clear)
         .cornerRadius(30)
     }
 }

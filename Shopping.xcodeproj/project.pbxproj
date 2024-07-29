@@ -238,9 +238,9 @@
 		B1405C8F2C555A510097C774 /* HomeView */ = {
 			isa = PBXGroup;
 			children = (
+				B1BA9D622C58268A00FB5A59 /* Models */,
 				B1405C902C555A660097C774 /* HomeView.swift */,
 				B105CDBE2C56C6390062E155 /* HomeViewModel.swift */,
-				B105CDC02C56C83E0062E155 /* ProductModel.swift */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -318,6 +318,14 @@
 				B1BA9D5B2C57F2B700FB5A59 /* FavoriteProductModel.swift */,
 			);
 			path = Favorites;
+			sourceTree = "<group>";
+		};
+		B1BA9D622C58268A00FB5A59 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B105CDC02C56C83E0062E155 /* ProductModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
