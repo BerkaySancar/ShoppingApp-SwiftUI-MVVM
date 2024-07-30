@@ -8,35 +8,41 @@
 import SwiftUI
 
 struct HomeView: View {
-     
+    
     @StateObject private var viewModel = HomeViewModel()
+    @State private var isScrollDown = true
     
     var body: some View {
-        GeometryReader { proxy in
-            NavigationStack {
-                ZStack {
-                    Color.appGrayBackground
-                        .ignoresSafeArea()
-                    
-                    VStack(alignment: .leading) {
-                        SearchFilterView(proxy: proxy)
+        NavigationStack {
+            ZStack {
+                Color.appGrayBackground
+                    .ignoresSafeArea()
+                
+                VStack(alignment: .leading) {
+                    SearchFilterView()
+                    if isScrollDown {
                         CategorySliderView()
-                        ScrollView {
-                            ScrollableProductsView()
-                                .padding(.bottom, 70)
-                        }
-                        .padding(.horizontal, 8)
                     }
-                    
-                    CustomProgressView(isVisible: $viewModel.showActivity)
+                    ScrollView {
+                        ProductsGridView()
+                            .padding(.bottom, 70)
+                    }
+                    .simultaneousGesture(
+                        DragGesture().onChanged {
+                            self.isScrollDown = 0 < $0.translation.height
+                        } )
+                    .scrollIndicators(.never)
+                    .padding(.horizontal, 8)
                 }
+                
+                CustomProgressView(isVisible: $viewModel.showActivity)
             }
-            .onAppear {
-                viewModel.onAppear()
-            }
-            .alert(isPresented: $viewModel.presentAlert) {
-                Alert(title: Text(viewModel.errorMessage))
-            }
+        }
+        .onAppear {
+            viewModel.onAppear()
+        }
+        .alert(isPresented: $viewModel.presentAlert) {
+            Alert(title: Text(viewModel.errorMessage))
         }
     }
 }
@@ -44,11 +50,10 @@ struct HomeView: View {
 //MARK: - Views
 extension HomeView {
     @ViewBuilder
-    private func SearchFilterView(proxy: GeometryProxy) -> some View {
+    private func SearchFilterView() -> some View {
         HStack {
             TextField("", text: $viewModel.searchText, prompt: Text("Search Product"))
                 .textFieldStyle(.plain)
-                .frame(width: proxy.size.width / 1.4)
                 .padding()
                 .background(RoundedRectangle(cornerRadius: 16).foregroundStyle(.white))
                 .autocorrectionDisabled(true)
@@ -67,6 +72,7 @@ extension HomeView {
                     .foregroundStyle(.white)
             }
         }
+        .padding(.trailing, 8)
     }
     
     @ViewBuilder
@@ -91,19 +97,31 @@ extension HomeView {
     }
     
     @ViewBuilder
-    private func ScrollableProductsView() -> some View {
+    private func ProductsGridView() -> some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 130))]) {
             ForEach(viewModel.content, id: \.id) { product in
                 NavigationLink {
                     ProductDetailView(product: product)
                 } label: {
-                    VStack {
+                    VStack(spacing: 0) {
                         ZStack {
                             AsyncImage(url: .init(string: product.images.first!)!) { image in
-                                image.image?.resizable()
+                                image.resizable()
+                                    .scaledToFit()
+                            } placeholder: {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 0)
+                                        .foregroundStyle(.grayBackground)
+                                        .frame(width: 80, height: 80)
+                
+                                    Image(systemName: "photo")
+                                        .foregroundStyle(.white)
+                                        .font(.system(size: 40))
+                                }
+                                .offset(y: 20)
                             }
-                            .frame(width: 120, height: 120)
-                            
+                            .frame(width: 160, height: 160)
+                        
                             Button {
                                 viewModel.favTapped(product: product)
                             } label: {
@@ -114,7 +132,7 @@ extension HomeView {
                                     .foregroundStyle(.appOrange)
                                     .background(Capsule().foregroundStyle(.grayBackground))
                             }
-                            .offset(x: 68, y: -32)
+                            .offset(x: 68, y: -55)
                         }
                         
                         Text(product.title)
@@ -129,11 +147,12 @@ extension HomeView {
                                 HStack {
                                     Image(systemName: "star.fill")
                                         .foregroundStyle(.yellow)
-                                        .padding(.bottom, 8)
+                                        .padding([.top, .bottom], 8)
                                 }
                             }
                         }
                     }
+                    .foregroundStyle(.black)
                     .background(RoundedRectangle(cornerRadius: 16).foregroundStyle(.white))
                 }
             }

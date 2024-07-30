@@ -56,8 +56,19 @@ extension ProductDetailView {
         TabView {
             ForEach(product.images, id: \.self) { imageURLStr in
                 AsyncImage(url: URL(string: imageURLStr)) { image in
-                    image.image?.resizable()
+                    image.resizable()
+                        .scaledToFit()
+                } placeholder: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 0)
+                            .foregroundStyle(.grayBackground)
+                        
+                        Image(systemName: "photo")
+                            .foregroundStyle(.white)
+                            .font(.system(size: 40))
+                    }
                 }
+                .frame(width: proxy.size.width, height: proxy.size.height / 2)
             }
         }
         .frame(width: proxy.size.width, height: proxy.size.height / 2)
@@ -92,10 +103,14 @@ extension ProductDetailView {
                 Text(product.title)
                     .font(.title3)
                 Spacer()
-                Text(product.brand ?? "")
+                Text(product.brand ?? "Shopping App")
                     .font(.callout)
+                    .padding(.all, 8)
+                    .background(RoundedRectangle(cornerRadius: 16)
+                        .foregroundStyle(.grayBackground))
             }
-            .padding(.horizontal)
+            .padding(.leading, 16)
+            .padding(.trailing, 8)
             
             Group {
                 Text("$\(product.price, format: .number.precision(.fractionLength(2)))")
@@ -152,6 +167,7 @@ extension ProductDetailView {
                 Button(isFav ? "Remove Favorite" : "Add to Favorite") {
                     addRemoveFavTapped()
                 }
+                .frame(minWidth: 128)
             }
             .foregroundStyle(.white)
             .padding()
@@ -171,7 +187,7 @@ extension ProductDetailView {
                 .foregroundStyle(.appOrange))
             
         }
-        .padding()
+        .padding(.all, 8)
         .background(RoundedRectangle(cornerRadius: 16)
             .foregroundStyle(.grayBackground))
         .padding(.horizontal, 8)
