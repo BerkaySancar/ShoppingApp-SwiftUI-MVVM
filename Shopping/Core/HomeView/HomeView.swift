@@ -31,6 +31,9 @@ struct HomeView: View {
                     CustomProgressView(isVisible: $viewModel.showActivity)
                 }
             }
+            .onAppear {
+                viewModel.onAppear()
+            }
             .alert(isPresented: $viewModel.presentAlert) {
                 Alert(title: Text(viewModel.errorMessage))
             }
@@ -75,7 +78,7 @@ extension HomeView {
                         viewModel.getCategoryProducts(category: category)
                         viewModel.selectedCategory = category
                     }
-                    .padding()
+                    .padding(.all, 12)
                     .background(RoundedRectangle(cornerRadius: 16)
                         .foregroundStyle(viewModel.selectedCategory == category ? .appOrange : .white))
                     .foregroundStyle(viewModel.selectedCategory == category ? .white : .appOrange)
@@ -84,7 +87,7 @@ extension HomeView {
             .padding(.horizontal, 10)
         }
         .scrollIndicators(.never, axes: .horizontal)
-        .frame(height: 80)
+        .frame(height: 60)
     }
     
     @ViewBuilder
@@ -92,37 +95,37 @@ extension HomeView {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 130))]) {
             ForEach(viewModel.content, id: \.id) { product in
                 NavigationLink {
-                    
+                    ProductDetailView(product: product)
                 } label: {
                     VStack {
                         ZStack {
                             AsyncImage(url: .init(string: product.images.first!)!) { image in
                                 image.image?.resizable()
                             }
-                            .frame(width: 150, height: 150)
+                            .frame(width: 120, height: 120)
                             
                             Button {
                                 viewModel.favTapped(product: product)
                             } label: {
-                                Image(systemName: viewModel.favorites.contains(where: {$0.id == product.id }) ? "heart.fill" : "heart")
+                                Image(systemName: viewModel.favoritesManager.favorites.contains(where: { $0.id == product.id}) ? "heart.fill" : "heart")
                                     .font(.system(size: 24))
                                     .padding()
                                     .frame(width: 40, height: 40)
                                     .foregroundStyle(.appOrange)
                                     .background(Capsule().foregroundStyle(.grayBackground))
                             }
-                            .offset(x: 70, y: -50)
+                            .offset(x: 68, y: -32)
                         }
                         
                         Text(product.title)
-                            .frame(maxWidth: .infinity)
+                            .frame(maxWidth: .infinity, minHeight: 60)
                             .lineLimit(2)
                             .padding(.horizontal, 4)
                         Text("$\(product.price, format: .number.precision(.fractionLength(2)))")
                             .bold()
                         
                         LazyHStack(spacing: 1) {
-                            ForEach(0...Int(product.rating), id: \.self) { num in
+                            ForEach(0..<Int(product.rating), id: \.self) { num in
                                 HStack {
                                     Image(systemName: "star.fill")
                                         .foregroundStyle(.yellow)

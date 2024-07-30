@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Product: Codable {
+struct Product: Codable, Identifiable {
     let id: Int
     let title: String
     let description: String
@@ -24,12 +24,16 @@ struct Product: Codable {
         price: 3.33,
         rating: 3.5,
         brand: "zara",
-        reviews: [Review.sampleReview],
-        images: ["https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png"]
+        reviews: [Review.sampleReview, Review.sampleReview],
+        images: [
+            "https://cdn.dummyjson.com/products/images/fragrances/Dolce%20Shine%20Eau%20de/1.png",
+            "https://cdn.dummyjson.com/products/images/fragrances/Dolce%20Shine%20Eau%20de/2.png",
+            "https://cdn.dummyjson.com/products/images/fragrances/Dolce%20Shine%20Eau%20de/3.png"
+        ]
     )
 }
 
-struct Review: Codable {
+struct Review: Codable, Hashable {
     let rating: Int
     let comment: String
     let reviewerName: String

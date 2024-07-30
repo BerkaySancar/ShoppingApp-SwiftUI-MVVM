@@ -11,7 +11,6 @@ import Combine
 
 protocol HomeViewModelProtocol {
     func getProducts()
-    func getFavs()
     func favTapped(product: Product)
     func filterSelected(selectedFilter: HomeFilterOptions)
     func getCategories()
@@ -27,12 +26,11 @@ final class HomeViewModel: ObservableObject {
     
     //Dependencies
     private let dummyService: DummyAPIServiceProtocol
-    private let userDefaultsManager: UserDefaultManagerProtocol
+    private(set) var favoritesManager: FavoritesManagerProtocol
     
     //Published
     @Published var content: [Product] = []
     @Published var products: [Product] = []
-    @Published var favorites: [FavoriteProduct] = []
     @Published var searchedProducts: [Product] = []
     @Published var categories: [String] = []
     @Published var showActivity = false
@@ -46,9 +44,9 @@ final class HomeViewModel: ObservableObject {
     
     //Init
     init(dummyService: DummyAPIServiceProtocol = DummyAPIService(),
-         userDefaultManager: UserDefaultManagerProtocol = USerDefaultManager()) {
+         favoritesManager: FavoritesManagerProtocol = FavoritesManager()) {
         self.dummyService = dummyService
-        self.userDefaultsManager = userDefaultManager
+        self.favoritesManager = favoritesManager
         
         self.listenSearchText()
         self.getProducts()
@@ -100,9 +98,7 @@ extension HomeViewModel: HomeViewModelProtocol {
                                 images: $0.images
                             )
                         }
-                        
                         self.content = self.products
-                        self.getFavs()
                     }
                 case .failure(let failure):
                     self.errorMessage = failure.errorDescription
@@ -111,26 +107,7 @@ extension HomeViewModel: HomeViewModelProtocol {
             }
         }
     }
-    
-    func getFavs() {
-        self.favorites = userDefaultsManager.getItem(key: .favorite, type: [FavoriteProduct].self) ?? []
-    }
-    
-    func favTapped(product: Product) {
-        if self.favorites.contains(where: {$0.id == product.id}) {
-            self.favorites.removeAll(where: {$0.id == product.id})
-        } else {
-            let favorite = FavoriteProduct(
-                id: product.id,
-                title: product.title,
-                price: product.price,
-                images: product.images
-            )
-            self.favorites.append(favorite)
-        }
-        self.userDefaultsManager.addItem(key: .favorite, item: self.favorites)
-    }
-    
+        
     func filterSelected(selectedFilter: HomeFilterOptions) {
         switch selectedFilter {
         case .sortByName:
@@ -237,5 +214,21 @@ extension HomeViewModel: HomeViewModelProtocol {
                 }
             }
         }
+    }
+    
+    func favTapped(product: Product) {
+        showActivity.toggle() // :)
+        if favoritesManager.isAlreadyFavorite(product: product) {
+            favoritesManager.removeFromFavorites(product: product)
+        } else {
+            favoritesManager.addToFavorite(product: product)
+        }
+        showActivity.toggle()
+    }
+    
+    func onAppear() {
+        showActivity.toggle()
+        favoritesManager.getFavorites()
+        showActivity.toggle()
     }
 }
