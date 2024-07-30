@@ -30,6 +30,9 @@
 		B197C76E2C545EB200548C7A /* TextField+Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197C76D2C545EB200548C7A /* TextField+Modifier.swift */; };
 		B1BA9D592C57E11300FB5A59 /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BA9D582C57E11300FB5A59 /* UserDefaultManager.swift */; };
 		B1BA9D5C2C57F2B700FB5A59 /* FavoriteProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BA9D5B2C57F2B700FB5A59 /* FavoriteProductModel.swift */; };
+		B1BC11232C58D9D900CF79BD /* ProductDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC11222C58D9D900CF79BD /* ProductDetailView.swift */; };
+		B1BC11252C58D9ED00CF79BD /* ProductDetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC11242C58D9ED00CF79BD /* ProductDetailVM.swift */; };
+		B1BC11272C590AFE00CF79BD /* FavoritesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC11262C590AFE00CF79BD /* FavoritesManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +79,9 @@
 		B197C76D2C545EB200548C7A /* TextField+Modifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextField+Modifier.swift"; sourceTree = "<group>"; };
 		B1BA9D582C57E11300FB5A59 /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
 		B1BA9D5B2C57F2B700FB5A59 /* FavoriteProductModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteProductModel.swift; sourceTree = "<group>"; };
+		B1BC11222C58D9D900CF79BD /* ProductDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailView.swift; sourceTree = "<group>"; };
+		B1BC11242C58D9ED00CF79BD /* ProductDetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailVM.swift; sourceTree = "<group>"; };
+		B1BC11262C590AFE00CF79BD /* FavoritesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +187,7 @@
 				B197C7672C545D7900548C7A /* Auth */,
 				B1405C8C2C555A2B0097C774 /* MainTabBar */,
 				B1405C8F2C555A510097C774 /* HomeView */,
+				B1BC11212C58D9C700CF79BD /* ProductDetail */,
 				B1BA9D5A2C57E57C00FB5A59 /* Favorites */,
 				B1405C922C555AAA0097C774 /* CartView */,
 			);
@@ -308,6 +315,7 @@
 			isa = PBXGroup;
 			children = (
 				B1BA9D582C57E11300FB5A59 /* UserDefaultManager.swift */,
+				B1BC11262C590AFE00CF79BD /* FavoritesManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -326,6 +334,15 @@
 				B105CDC02C56C83E0062E155 /* ProductModel.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		B1BC11212C58D9C700CF79BD /* ProductDetail */ = {
+			isa = PBXGroup;
+			children = (
+				B1BC11222C58D9D900CF79BD /* ProductDetailView.swift */,
+				B1BC11242C58D9ED00CF79BD /* ProductDetailVM.swift */,
+			);
+			path = ProductDetail;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -473,6 +490,8 @@
 				B103D8192C542BE6000FA048 /* ShoppingApp.swift in Sources */,
 				B1405C972C555EF60097C774 /* SplashView.swift in Sources */,
 				B1405C882C552AEA0097C774 /* AppColor.swift in Sources */,
+				B1BC11252C58D9ED00CF79BD /* ProductDetailVM.swift in Sources */,
+				B1BC11272C590AFE00CF79BD /* FavoritesManager.swift in Sources */,
 				B1405C942C555AB00097C774 /* CartView.swift in Sources */,
 				B1405C9A2C555FE80097C774 /* SplashViewModel.swift in Sources */,
 				B105CDBF2C56C6390062E155 /* HomeViewModel.swift in Sources */,
@@ -480,6 +499,7 @@
 				B1405C852C55229E0097C774 /* SignUpViewModel.swift in Sources */,
 				B1405C8B2C553E330097C774 /* CustomProgressView.swift in Sources */,
 				B197C76A2C545D9700548C7A /* LoginViewModel.swift in Sources */,
+				B1BC11232C58D9D900CF79BD /* ProductDetailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

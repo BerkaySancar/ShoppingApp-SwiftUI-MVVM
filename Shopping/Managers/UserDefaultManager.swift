@@ -11,7 +11,7 @@ enum StorageType: String {
     case favorite = "favorite"
 }
 
-protocol UserDefaultManagerProtocol {
+protocol UserDefaultManagerProtocol: AnyObject {
     func addItem<T: Codable>(key: StorageType, item: T)
     func getItem<T: Codable>(key: StorageType, type: T.Type) -> T?
     func removeKeyData(key: StorageType)
