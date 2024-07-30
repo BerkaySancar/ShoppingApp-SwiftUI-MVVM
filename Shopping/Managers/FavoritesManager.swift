@@ -8,6 +8,8 @@
 import Foundation
 
 protocol FavoritesManagerProtocol: AnyObject {
+    var favorites: [FavoriteProduct] { get set }
+    
     func addToFavorite(product: Product)
     func getFavorites()
     func removeFromFavorites(product: Product)
