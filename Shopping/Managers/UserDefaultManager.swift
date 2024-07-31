@@ -9,6 +9,7 @@ import Foundation
 
 enum StorageType: String {
     case favorite = "favorite"
+    case cart = "cart"
 }
 
 protocol UserDefaultManagerProtocol: AnyObject {
@@ -29,9 +30,34 @@ final class USerDefaultManager: UserDefaultManagerProtocol {
     }
     
     func getItem<T: Codable>(key: StorageType, type: T.Type) -> T? {
-        if let data = userDefaults.data(forKey: key.rawValue),
-           let decodedItem = try? decoder.decode(type, from: data) {
-            return decodedItem
+        if let data = userDefaults.data(forKey: key.rawValue) {
+            do {
+                let decodedItem = try decoder.decode(type, from: data)
+                return decodedItem
+            } catch let DecodingError.dataCorrupted(context) {
+                #if DEBUG  
+                print(context)
+                #endif
+            } catch let DecodingError.keyNotFound(key, context) {
+                #if DEBUG
+                print("Key '\(key)' not found:", context.debugDescription)
+                print("codingPath:", context.codingPath)
+                #endif
+            } catch let DecodingError.valueNotFound(value, context) {
+                #if DEBUG
+                print("Value '\(value)' not found:", context.debugDescription)
+                print("codingPath:", context.codingPath)
+                #endif
+            } catch let DecodingError.typeMismatch(type, context)  {
+                #if DEBUG
+                print("Type '\(type)' mismatch:", context.debugDescription)
+                print("codingPath:", context.codingPath)
+                #endif
+            } catch {
+                #if DEBUG
+                print("error: ", error)
+                #endif
+            }
         }
         return nil
     }

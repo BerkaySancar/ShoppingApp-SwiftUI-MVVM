@@ -10,14 +10,17 @@ import SwiftUI
 struct CustomStepperView: View {
     
     @State var count: Int
+    var countEqualZero: (() -> Void)?
     
     private func plus() {
         self.count += 1
     }
     
     private func minus() {
-        if count > 1 {
+        if count >= 1 {
             self.count -= 1
+        } else if count == 0 {
+            countEqualZero?()
         }
     }
     
@@ -62,5 +65,5 @@ struct CustomStepperView: View {
 }
 
 #Preview {
-    CustomStepperView(count: 0)
+    CustomStepperView(count: 0, countEqualZero: nil)
 }

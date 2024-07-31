@@ -9,43 +9,30 @@ import SwiftUI
 
 struct ProductDetailView: View {
     
-    var product: Product
-    private let favoritesManager: FavoritesManager
-    @State var isFav: Bool
+    @ObservedObject private var viewModel = ProductDetailVM()
     
-    init(product: Product,
-         favoritesManager: FavoritesManager = .init()) {
-        self.product = product
-        self.favoritesManager = favoritesManager
-        self.isFav = favoritesManager.favorites.contains(where: { $0.id == product.id })
+    @State private var showCart = false
+    
+    init(product: Product) {
+        self.viewModel.product = product
     }
     
     var body: some View {
-        GeometryReader { proxy in
-            VStack {
-                ScrollView(.vertical) {
-                    ProductImageTabView(proxy: proxy)
-                    RatingStockView()
-                    ProductInfoView(proxy: proxy)
+        NavigationStack {
+            GeometryReader { proxy in
+                VStack {
+                    ScrollView(.vertical) {
+                        ProductImageTabView(proxy: proxy)
+                        RatingStockView()
+                        ProductInfoView(proxy: proxy)
+                    }
+                    BottomView(proxy: proxy)
                 }
-                BottomView()
             }
         }
-    }
-    
-    private func addToCartTapped() {
-     
-    }
-    
-    private func addRemoveFavTapped() {
-        self.isFav.toggle()
-        favoritesManager.isAlreadyFavorite(
-            product: product
-        ) ? favoritesManager.removeFromFavorites(
-            product: product
-        ) : favoritesManager.addToFavorite(
-            product: product
-        )
+        .navigationDestination(isPresented: $viewModel.navigateCart) {
+            CartView()
+        }
     }
 }
 
@@ -54,7 +41,7 @@ extension ProductDetailView {
     @ViewBuilder
     private func ProductImageTabView(proxy: GeometryProxy) -> some View {
         TabView {
-            ForEach(product.images, id: \.self) { imageURLStr in
+            ForEach(viewModel.product.images, id: \.self) { imageURLStr in
                 AsyncImage(url: URL(string: imageURLStr)) { image in
                     image.resizable()
                         .scaledToFit()
@@ -81,13 +68,13 @@ extension ProductDetailView {
     private func RatingStockView() -> some View {
         HStack(alignment: .top) {
             LazyHStack(spacing: 1) {
-                ForEach(0..<Int(product.rating), id: \.self) { num in
+                ForEach(0..<Int(viewModel.product.rating), id: \.self) { num in
                     Image(systemName: "star.fill")
                         .foregroundStyle(.yellow)
                         .padding(.bottom, 8)
                 }
             }
-            Text("\(product.reviews.count) reviews")
+            Text("\(viewModel.product.reviews.count) reviews")
             
             Spacer()
             
@@ -100,10 +87,10 @@ extension ProductDetailView {
     private func ProductInfoView(proxy: GeometryProxy) -> some View {
         VStack(alignment: .leading) {
             HStack {
-                Text(product.title)
+                Text(viewModel.product.title)
                     .font(.title3)
                 Spacer()
-                Text(product.brand ?? "Shopping App")
+                Text(viewModel.product.brand ?? "Shopping App")
                     .font(.callout)
                     .padding(.all, 8)
                     .background(RoundedRectangle(cornerRadius: 16)
@@ -113,11 +100,11 @@ extension ProductDetailView {
             .padding(.trailing, 8)
             
             Group {
-                Text("$\(product.price, format: .number.precision(.fractionLength(2)))")
+                Text("$\(viewModel.product.price, format: .number.precision(.fractionLength(2)))")
                     .bold()
                     .font(.title2)
                 
-                Text(product.description)
+                Text(viewModel.product.description)
                     .padding(.top, 8)
                 
                 Text("Comments")
@@ -137,7 +124,7 @@ extension ProductDetailView {
     private func ReviewsView() -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
-                ForEach(product.reviews, id: \.self) { review in
+                ForEach(viewModel.product.reviews, id: \.self) { review in
                     VStack(alignment: .leading) {
                         Text(review.reviewerName)
                             .foregroundColor(.black.opacity(0.75))
@@ -159,38 +146,41 @@ extension ProductDetailView {
     }
     
     @ViewBuilder
-    private func BottomView() -> some View {
-        HStack {
+    private func BottomView(proxy: GeometryProxy) -> some View {
+        VStack {
+            Rectangle()
+                .frame(width: proxy.size.width, height: 1)
+                .foregroundStyle(.grayBackground)
             HStack {
-                Image(systemName: isFav ? "heart.fill" : "heart")
-                    .foregroundStyle(.red)
-                Button(isFav ? "Remove Favorite" : "Add to Favorite") {
-                    addRemoveFavTapped()
+                HStack {
+                    Image(systemName: viewModel.isFav ? "heart.fill" : "heart")
+                        .foregroundStyle(.red)
+                    Button(viewModel.isFav ? "Remove Favorite" : "Add to Favorite") {
+                        viewModel.addRemoveFavTapped(product: viewModel.product)
+                    }
+                    .frame(minWidth: 128)
                 }
-                .frame(minWidth: 128)
-            }
-            .foregroundStyle(.white)
-            .padding()
-            .background(RoundedRectangle(cornerRadius: 16)
-                .foregroundStyle(.appOrange))
-            
-            Spacer()
-            HStack {
-                Image(systemName: "cart")
-                Button("Add to Cart") {
-                    
+                .foregroundStyle(.white)
+                .padding()
+                .background(RoundedRectangle(cornerRadius: 16)
+                    .foregroundStyle(.appOrange))
+                
+                Spacer()
+                HStack {
+                    Image(systemName: "cart")
+                    Button("Add to Cart") {
+                        viewModel.addToCartTapped()
+                    }
                 }
+                .foregroundStyle(.white)
+                .padding()
+                .background(RoundedRectangle(cornerRadius: 16)
+                    .foregroundStyle(.appOrange))
+                
             }
-            .foregroundStyle(.white)
-            .padding()
-            .background(RoundedRectangle(cornerRadius: 16)
-                .foregroundStyle(.appOrange))
-            
+            .padding(.all, 8)
+            .padding(.horizontal, 8)
         }
-        .padding(.all, 8)
-        .background(RoundedRectangle(cornerRadius: 16)
-            .foregroundStyle(.grayBackground))
-        .padding(.horizontal, 8)
     }
 }
 

@@ -12,14 +12,17 @@ import SwiftUI
 
 enum TabbedItems: Int, CaseIterable {
     case home = 0
-    case cart
+    case favorites
+    case profile
     
     var title: String {
         switch self {
         case .home:
             return "Home"
-        case .cart:
-            return "Cart"
+        case .favorites:
+            return "Favorite"
+        case .profile:
+            return "Profile"
         }
     }
     
@@ -27,8 +30,10 @@ enum TabbedItems: Int, CaseIterable {
         switch self {
         case .home:
             return "house"
-        case .cart:
-            return "cart"
+        case .favorites:
+            return "heart"
+        case .profile:
+            return "person"
         }
     }
 }
@@ -47,12 +52,15 @@ struct MainTabbarView: View {
             TabView(selection: $selectedTab) {
                 HomeView()
                     .tag(0)
-
-                CartView()
+                
+                FavoritesView()
                     .tag(1)
+
+                ProfileView()
+                    .tag(2)
             }
             
-            ZStack{
+            ZStack {
                 HStack {
                     ForEach((TabbedItems.allCases), id: \.self) { item in
                         Button {
@@ -69,6 +77,7 @@ struct MainTabbarView: View {
             .cornerRadius(35)
             .padding(.horizontal, 26)
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
 
@@ -79,16 +88,16 @@ extension MainTabbarView {
             Image(systemName: imageName)
                 .resizable()
                 .renderingMode(.template)
-                .foregroundColor(isActive ? .white : .gray)
+                .foregroundColor(isActive ? .white : .white)
                 .frame(width: 20, height: 20)
             if isActive{
                 Text(title)
                     .font(.system(size: 14))
-                    .foregroundColor(isActive ? .white : .gray)
+                    .foregroundColor(isActive ? .white : .white)
             }
             Spacer()
         }
-        .frame(width: isActive ? 160 : 60, height: 60)
+        .frame(width: isActive ? 120 : 60, height: 60)
         .background(isActive ? .orange : .clear)
         .cornerRadius(30)
     }

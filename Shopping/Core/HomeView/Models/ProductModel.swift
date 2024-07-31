@@ -16,6 +16,7 @@ struct Product: Codable, Identifiable {
     let brand: String?
     let reviews: [Review]
     let images: [String]
+    var count: Int = 0
     
     static let sampleProduct: Product = .init(
         id: 1,
@@ -24,6 +25,21 @@ struct Product: Codable, Identifiable {
         price: 3.33,
         rating: 3.5,
         brand: "zara",
+        reviews: [Review.sampleReview, Review.sampleReview],
+        images: [
+            "https://cdn.dummyjson.com/products/images/fragrances/Dolce%20Shine%20Eau%20de/1.png",
+            "https://cdn.dummyjson.com/products/images/fragrances/Dolce%20Shine%20Eau%20de/2.png",
+            "https://cdn.dummyjson.com/products/images/fragrances/Dolce%20Shine%20Eau%20de/3.png"
+        ]
+    )
+    
+    static let sampleProduct2: Product = .init(
+        id: 2,
+        title: "CEKETTTT",
+        description: "asşdlkasd aşsda sd aşsdk aasasd",
+        price: 4.5,
+        rating: 3.5,
+        brand: "Akbank",
         reviews: [Review.sampleReview, Review.sampleReview],
         images: [
             "https://cdn.dummyjson.com/products/images/fragrances/Dolce%20Shine%20Eau%20de/1.png",
