@@ -12,15 +12,16 @@ public protocol DummyAPIServiceProtocol {
                     lastname: String,
                     username: String,
                     password: String,
-                    completion: @escaping (Result<LoginDTO?, ServiceError>) -> Void)
+                    completion: @escaping (Result<LoginRequestDTO?, ServiceError>) -> Void)
     func login(username: String,
                password: String,
-               completion: @escaping (Result<LoginDTO?, ServiceError>) -> Void)
+               completion: @escaping (Result<LoginResponseDTO?, ServiceError>) -> Void)
     func getProducts(completion: @escaping (Result<[Product]?, ServiceError>) -> Void)
     func searchProducts(query: String,
                         completion: @escaping (Result<[Product]?, ServiceError>) -> Void)
     func getCategories(completion: @escaping (Result<[String]?, ServiceError>) -> Void)
     func getCategoryProducts(category: String, completion: @escaping (Result<[Product]?, ServiceError>) -> Void)
+    func getAuthUser(token: String, completion: @escaping (Result<UserDTO?, ServiceError>) -> Void)
 }
 
 @available(iOS 15.0, *)
@@ -36,9 +37,9 @@ public final class DummyAPIService: DummyAPIServiceProtocol {
                            lastname: String,
                            username: String,
                            password: String,
-                           completion: @escaping (Result<LoginDTO?, ServiceError>) -> Void) {
+                           completion: @escaping (Result<LoginRequestDTO?, ServiceError>) -> Void) {
         let user = AddUserDTO(firstName: firstname, lastName: lastname, username: username, password: password)
-        serviceManager.request(DummyAPI.addUser(user), type: LoginDTO.self) { results in
+        serviceManager.request(DummyAPI.addUser(user), type: LoginRequestDTO.self) { results in
             switch results {
             case .success(let success):
                 completion(.success(success))
@@ -50,8 +51,19 @@ public final class DummyAPIService: DummyAPIServiceProtocol {
     
     public func login(username: String,
                       password: String,
-                      completion: @escaping (Result<LoginDTO?, ServiceError>) -> Void) {
-        serviceManager.request(DummyAPI.login(LoginDTO(username: username, password: password)), type: LoginDTO.self) { results in
+                      completion: @escaping (Result<LoginResponseDTO?, ServiceError>) -> Void) {
+        serviceManager.request(DummyAPI.login(LoginRequestDTO(username: username, password: password)), type: LoginResponseDTO.self) { results in
+            switch results {
+            case .success(let success):
+                completion(.success(success))
+            case .failure(let failure):
+                completion(.failure(failure))
+            }
+        }
+    }
+    
+    public func getAuthUser(token: String, completion: @escaping (Result<UserDTO?, ServiceError>) -> Void) {
+        serviceManager.request(DummyAPI.authUser(token), type: UserDTO.self) { results in
             switch results {
             case .success(let success):
                 completion(.success(success))

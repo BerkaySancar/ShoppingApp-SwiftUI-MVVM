@@ -3,7 +3,8 @@ import Foundation
 
 enum DummyAPI: URLRequestConvertible {
     case addUser(AddUserDTO)
-    case login(LoginDTO)
+    case login(LoginRequestDTO)
+    case authUser(_ token: String)
     case products
     case searchProduct(_ query: String)
     case categories
@@ -19,6 +20,8 @@ enum DummyAPI: URLRequestConvertible {
             "users/add"
         case .login:
             "auth/login"
+        case .authUser:
+            "auth/me"
         case .products:
             "products"
         case .searchProduct:
@@ -36,6 +39,8 @@ enum DummyAPI: URLRequestConvertible {
             .post
         case .login:
             .post
+        case .authUser:
+            .get
         case .products:
             .get
         case .searchProduct:
@@ -48,7 +53,15 @@ enum DummyAPI: URLRequestConvertible {
     }
     
     var headers: [String : String]? {
-        ["Content-Type": "application/json"]
+        switch self {
+        case .login:
+            ["Content-Type": "application/json"]
+        case .authUser(let token):
+            ["Authorization": "Bearer \(token)"]
+        case .categories, .products, .searchProduct, .getCategoryProducts, .addUser:
+            nil
+            
+        }
     }
     
     var parameters: [String : Any]? {
@@ -57,6 +70,8 @@ enum DummyAPI: URLRequestConvertible {
             userData.convertToDictionary()
         case .login(let loginData):
             loginData.convertToDictionary()
+        case .authUser:
+            nil
         case .products, .categories, .getCategoryProducts:
             nil
         case .searchProduct(let query):
