@@ -10,7 +10,7 @@ import SwiftUI
 struct CartView: View {
     
     @StateObject private var viewModel = CartViewModel()
-        
+    
     var body: some View {
         ZStack {
             Color.grayBackground
@@ -44,6 +44,7 @@ extension CartView {
         HStack {
             AsyncImage(url: .init(string: item.images.first!)!) { image in
                 image.resizable()
+                    .scaledToFit()
             } placeholder: {
                 ZStack {
                     RoundedRectangle(cornerRadius: 0)
@@ -56,26 +57,25 @@ extension CartView {
                 }
             }
             .frame(width: 120, height: 120)
-            .padding(.leading, 12)
+            .padding(.leading, 8)
             
             VStack(alignment: .leading) {
                 Text(item.title)
                     .font(.headline)
-                    .bold()
                     .lineLimit(2)
+                    .padding(.top, 4)
                 Text(item.brand)
                     .font(.callout)
                 
-                Text("$\(item.price)")
-                    .padding(.top, 38)
-                    .font(.title3).bold()
+                Text("$\(item.price, format: .number.precision(.fractionLength(2)))")
+                    .padding(.top, 8)
+                    .font(.headline)
             }
             
             Spacer()
             
-            CustomStepperView(count: item.count, countEqualZero: {
-                viewModel.removeItemFromCart(item: item)
-                print(item.count)
+            CustomStepperView(count: item.count, changedValue: { value in
+                viewModel.stepperValueChanged(item: item, count: value)
             })
             .padding()
         }
@@ -95,7 +95,7 @@ extension CartView {
                     Text("Order total:")
                         .font(.headline)
                     Spacer()
-                    Text("$123123.123")
+                    Text(("$\(viewModel.orderTotal, format: .number.precision(.fractionLength(2)))"))
                         .font(.headline)
                 }
                 .padding()

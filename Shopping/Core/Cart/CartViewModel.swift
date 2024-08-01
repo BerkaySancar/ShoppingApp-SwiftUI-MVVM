@@ -13,7 +13,12 @@ final class CartViewModel: ObservableObject {
     private let cartManager: CartManagerProtocol
     private var cancellables = Set<AnyCancellable>()
     
-    @Published var cartItems: [CartModel] = []
+    @Published var cartItems: [CartModel] = [] {
+        didSet {
+            calculateOrderTotal()
+        }
+    }
+    @Published var orderTotal: Double = 0
  
     init(cartManager: CartManagerProtocol = CartManager()) {
         self.cartManager = cartManager
@@ -30,7 +35,20 @@ final class CartViewModel: ObservableObject {
             .store(in: &cancellables)
      }
     
-    func removeItemFromCart(item: CartModel) {
-        self.cartManager.removeFromCart(item: item)
+    func stepperValueChanged(item: CartModel, count: Int) {
+        if count == 0 {
+            self.cartManager.removeFromCart(item: item)
+        }
+        
+        self.cartItems.filter { $0.id == item.id }.first?.count = count
+        calculateOrderTotal()
+    }
+    
+    func calculateOrderTotal() {
+        orderTotal = 0
+        
+        for item in cartItems {
+            orderTotal += item.price * Double(item.count)
+        }
     }
 }

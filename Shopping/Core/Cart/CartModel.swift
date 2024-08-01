@@ -20,6 +20,17 @@ class CartModel: ObservableObject, Codable {
     var images: [String] = []
     @Published var count: Int = 1
     
+    static var sampleCartModel: CartModel {
+        let cartModel = CartModel()
+        cartModel.id = 1
+        cartModel.count = 1
+        cartModel.images = ["https://cdn.dummyjson.com/products/images/fragrances/Dolce%20Shine%20Eau%20de/3.png"]
+        cartModel.price = 3.3333
+        cartModel.title = "Ayakkabııııııııııııı"
+        cartModel.brand = "Gucci"
+        return cartModel
+    }
+    
     init() {}
 
     func encode(to encoder: any Encoder) throws {
