@@ -10,6 +10,7 @@ import Foundation
 enum StorageType: String {
     case favorite = "favorite"
     case cart = "cart"
+    case authToken = "token"
 }
 
 protocol UserDefaultManagerProtocol: AnyObject {
