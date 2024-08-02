@@ -22,6 +22,7 @@ public protocol DummyAPIServiceProtocol {
     func getCategories(completion: @escaping (Result<[String]?, ServiceError>) -> Void)
     func getCategoryProducts(category: String, completion: @escaping (Result<[Product]?, ServiceError>) -> Void)
     func getAuthUser(token: String, completion: @escaping (Result<UserDTO?, ServiceError>) -> Void)
+    func refreshToken(refreshToken: String, expiresInMins: Int, completion: @escaping (Result<TokenDTO?, ServiceError>) -> Void)
 }
 
 @available(iOS 15.0, *)
@@ -52,7 +53,18 @@ public final class DummyAPIService: DummyAPIServiceProtocol {
     public func login(username: String,
                       password: String,
                       completion: @escaping (Result<LoginResponseDTO?, ServiceError>) -> Void) {
-        serviceManager.request(DummyAPI.login(LoginRequestDTO(username: username, password: password)), type: LoginResponseDTO.self) { results in
+        serviceManager.request(DummyAPI.login(LoginRequestDTO(username: username, password: password, expiresInMins: 1)), type: LoginResponseDTO.self) { results in
+            switch results {
+            case .success(let success):
+                completion(.success(success))
+            case .failure(let failure):
+                completion(.failure(failure))
+            }
+        }
+    }
+    
+    public func refreshToken(refreshToken: String, expiresInMins: Int, completion: @escaping (Result<TokenDTO?, ServiceError>) -> Void) {
+        serviceManager.request(DummyAPI.refreshToken(.init(refreshToken: refreshToken, expiresInMins: expiresInMins)), type: TokenDTO.self) { results in
             switch results {
             case .success(let success):
                 completion(.success(success))

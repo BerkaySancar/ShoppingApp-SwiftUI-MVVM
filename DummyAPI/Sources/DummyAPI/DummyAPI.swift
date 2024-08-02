@@ -5,6 +5,7 @@ enum DummyAPI: URLRequestConvertible {
     case addUser(AddUserDTO)
     case login(LoginRequestDTO)
     case authUser(_ token: String)
+    case refreshToken(RefreshTokenRequestDTO)
     case products
     case searchProduct(_ query: String)
     case categories
@@ -22,6 +23,8 @@ enum DummyAPI: URLRequestConvertible {
             "auth/login"
         case .authUser:
             "auth/me"
+        case .refreshToken:
+            "auth/refresh"
         case .products:
             "products"
         case .searchProduct:
@@ -41,6 +44,8 @@ enum DummyAPI: URLRequestConvertible {
             .post
         case .authUser:
             .get
+        case .refreshToken:
+            .post
         case .products:
             .get
         case .searchProduct:
@@ -54,7 +59,7 @@ enum DummyAPI: URLRequestConvertible {
     
     var headers: [String : String]? {
         switch self {
-        case .login:
+        case .login, .refreshToken:
             ["Content-Type": "application/json"]
         case .authUser(let token):
             ["Authorization": "Bearer \(token)"]
@@ -70,6 +75,8 @@ enum DummyAPI: URLRequestConvertible {
             userData.convertToDictionary()
         case .login(let loginData):
             loginData.convertToDictionary()
+        case .refreshToken(let tokenData):
+            tokenData.convertToDictionary()
         case .authUser:
             nil
         case .products, .categories, .getCategoryProducts:

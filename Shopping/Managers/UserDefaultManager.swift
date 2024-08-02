@@ -11,6 +11,7 @@ enum StorageType: String {
     case favorite = "favorite"
     case cart = "cart"
     case authToken = "token"
+    case refreshToken = "refreshToken"
 }
 
 protocol UserDefaultManagerProtocol: AnyObject {

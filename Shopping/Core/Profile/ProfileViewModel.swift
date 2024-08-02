@@ -16,6 +16,7 @@ final class ProfileViewModel: ObservableObject {
     @Published var showActivity = false
     @Published var user: UserModel?
     @Published var showAlert = false
+    @Published var turnLogin = false
     
     private(set) var errorMessage: String = ""
     
@@ -49,6 +50,20 @@ final class ProfileViewModel: ObservableObject {
                             )
                         }
                     case .failure(let failure):
+                        if failure == .unauthorized {
+                            if let refreshToken = self.userDefaultsManager.getItem(key: .refreshToken, type: String.self) {
+                                self.dummyAPIService.refreshToken(refreshToken: refreshToken, expiresInMins: 1) { results in
+                                    switch results {
+                                    case .success(let success):
+                                        self.userDefaultsManager.addItem(key: .authToken, item: success?.token)
+                                        self.userDefaultsManager.addItem(key: .refreshToken, item: success?.refreshToken)
+                                    case .failure(let failure):
+                                        self.showAlert.toggle()
+                                        self.errorMessage = failure.errorDescription
+                                    }
+                                }
+                            }
+                        }
                         self.showAlert.toggle()
                         self.errorMessage = failure.errorDescription
                     }
@@ -59,5 +74,7 @@ final class ProfileViewModel: ObservableObject {
     
     func signOutTapped() {
         userDefaultsManager.removeKeyData(key: .authToken)
+        userDefaultsManager.removeKeyData(key: .refreshToken)
+        self.turnLogin.toggle()
     }
 }

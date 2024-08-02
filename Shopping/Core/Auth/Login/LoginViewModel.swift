@@ -17,10 +17,11 @@ final class LoginViewModel: ObservableObject {
     
     //Dependencies
     private let service: DummyAPIServiceProtocol
+    private let userDefaultManager: UserDefaultManagerProtocol
     
     //Published variables
-    @Published var username: String = ""
-    @Published var password: String = ""
+    @Published var username: String = "emilys"
+    @Published var password: String = "emilyspass"
     @Published var isLoggedIn = false
     @Published var isPresentAlert = false
     @Published var showSignup = false
@@ -30,8 +31,10 @@ final class LoginViewModel: ObservableObject {
     private(set) var errorMessage: String = ""
     
     //Init
-    init(service: DummyAPIServiceProtocol = DummyAPIService()) {
+    init(service: DummyAPIServiceProtocol = DummyAPIService(),
+         userDefaultsManager: UserDefaultManagerProtocol = USerDefaultManager()) {
         self.service = service
+        self.userDefaultManager = userDefaultsManager
     }
 }
 
@@ -46,8 +49,10 @@ extension LoginViewModel: LoginViewModelProtocol {
                 DispatchQueue.main.async {
                     self.showActivity = false
                     switch results {
-                    case .success(_):
+                    case .success(let login):
                         self.isLoggedIn.toggle()
+                        self.userDefaultManager.addItem(key: .authToken, item: login?.token)
+                        self.userDefaultManager.addItem(key: .refreshToken, item: login?.refreshToken)
                     case .failure(let failure):
                         self.errorMessage = failure.errorDescription
                         self.isPresentAlert.toggle()

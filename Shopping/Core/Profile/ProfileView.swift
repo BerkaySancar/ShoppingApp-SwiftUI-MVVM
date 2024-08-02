@@ -32,6 +32,9 @@ struct ProfileView: View {
         .alert(isPresented: $viewModel.showAlert) {
             Alert(title: Text(viewModel.errorMessage))
         }
+        .fullScreenCover(isPresented: $viewModel.turnLogin) {
+            LoginView()
+        }
     }
 }
 

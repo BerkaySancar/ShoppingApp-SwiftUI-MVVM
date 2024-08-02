@@ -36,9 +36,12 @@ struct SplashView: View {
                 message: Text("Try again."),
                 dismissButton: .cancel(Text("Done"), action: { viewModel.manageSplashAction() }))
         }
-        .fullScreenCover(isPresented: $viewModel.isSplashComplete) {
-            LoginView()
+        .fullScreenCover(isPresented: $viewModel.isAuthUser) {
+            MainTabbarView()
                 .navigationBarBackButtonHidden()
+        }
+        .fullScreenCover(isPresented: $viewModel.shouldLogin) {
+            LoginView()
         }
     }
 }
