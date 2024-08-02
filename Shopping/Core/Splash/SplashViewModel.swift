@@ -9,6 +9,11 @@ import Foundation
 import SystemConfiguration
 import DummyAPI
 
+enum SplashRoutes: Hashable {
+    case mainTabBar
+    case login
+}
+
 @MainActor
 final class SplashViewModel: ObservableObject {
     
@@ -42,28 +47,32 @@ final class SplashViewModel: ObservableObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
             guard let self else { return }
             if self.isNetworkReachable {
-                if let token = userDefaultsManager.getItem(key: .authToken, type: String.self) {
-                    dummyAPIService.getAuthUser(token: token) { results in
-                        switch results {
-                        case .success(_):
-                            self.isAuthUser = true
-                        case .failure(let failure):
-                            switch failure {
-                            case .unauthorized:
-                                if let refreshToken = self.userDefaultsManager.getItem(key: .refreshToken, type: String.self) {
-                                    self.dummyAPIService.refreshToken(refreshToken: refreshToken, expiresInMins: 1) { results in
-                                        switch results {
-                                        case .success(let success):
-                                            self.userDefaultsManager.addItem(key: .authToken, item: success?.token)
-                                            self.userDefaultsManager.addItem(key: .refreshToken, item: success?.refreshToken)
-                                            self.isAuthUser = true
-                                        case .failure(_):
-                                            self.shouldLogin = true
+                if let token = self.userDefaultsManager.getItem(key: .authToken, type: String.self) {
+                    DispatchQueue.main.async {
+                        self.dummyAPIService.getAuthUser(token: token) { results in
+                            switch results {
+                            case .success(_):
+                                self.isAuthUser = true
+                            case .failure(let failure):
+                                switch failure {
+                                case .unauthorized:
+                                    if let refreshToken = self.userDefaultsManager.getItem(key: .refreshToken, type: String.self) {
+                                        DispatchQueue.main.async {
+                                            self.dummyAPIService.refreshToken(refreshToken: refreshToken, expiresInMins: 1) { results in
+                                                switch results {
+                                                case .success(let success):
+                                                    self.userDefaultsManager.addItem(key: .authToken, item: success?.token)
+                                                    self.userDefaultsManager.addItem(key: .refreshToken, item: success?.refreshToken)
+                                                    self.isAuthUser = true
+                                                case .failure(_):
+                                                    self.shouldLogin = true
+                                                }
+                                            }
                                         }
                                     }
+                                default:
+                                    self.shouldLogin = true
                                 }
-                            default:
-                                self.shouldLogin = true
                             }
                         }
                     }

@@ -12,28 +12,30 @@ struct ProfileView: View {
     @StateObject private var viewModel = ProfileViewModel()
     
     var body: some View {
-        ZStack {
-            List {
-                Section("User") {
-                  TopSection()
+        NavigationStack {
+            ZStack {
+                List {
+                    Section("User") {
+                        TopSection()
+                    }
+                    
+                    Section("User Informations") {
+                        InfosSection()
+                    }
+                    
+                    Section("") {
+                        LogOutRemoveSection()
+                    }
                 }
-        
-                Section("User Informations") {
-                 InfosSection()
-                }
-            
-                Section("") {
-                    LogOutRemoveSection()
-                }
+                
+                CustomProgressView(isVisible: $viewModel.showActivity)
             }
-            
-            CustomProgressView(isVisible: $viewModel.showActivity)
-        }
-        .alert(isPresented: $viewModel.showAlert) {
-            Alert(title: Text(viewModel.errorMessage))
-        }
-        .fullScreenCover(isPresented: $viewModel.turnLogin) {
-            LoginView()
+            .alert(isPresented: $viewModel.showAlert) {
+                Alert(title: Text(viewModel.errorMessage))
+            }
+            .navigationDestination(isPresented: $viewModel.turnLogin) {
+                LoginView().navigationBarBackButtonHidden()
+            }
         }
     }
 }
