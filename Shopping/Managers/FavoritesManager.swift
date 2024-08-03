@@ -8,20 +8,22 @@
 import Foundation
 
 protocol FavoritesManagerProtocol: AnyObject {
-    var favorites: [FavoriteProduct] { get set }
+    var favorites: [Product] { get set }
+    var favoritesPublisher: Published<[Product]>.Publisher { get }
     
     func addToFavorite(product: Product)
     func getFavorites()
-    func removeFromFavorites(product: Product)
+    func removeFromFavorites(productId: Int)
     func isAlreadyFavorite(product: Product) -> Bool
     func save() 
 }
 
 final class FavoritesManager: ObservableObject, FavoritesManagerProtocol {
-    
+
     private let userDefaultManager: UserDefaultManagerProtocol
     
-    @Published var favorites: [FavoriteProduct] = []
+    @Published var favorites: [Product] = []
+    var favoritesPublisher: Published<[Product]>.Publisher { $favorites }
     
     init(userDefaultManager: UserDefaultManagerProtocol = USerDefaultManager()) {
         self.userDefaultManager = userDefaultManager
@@ -30,25 +32,17 @@ final class FavoritesManager: ObservableObject, FavoritesManagerProtocol {
     }
     
     func addToFavorite(product: Product) {
-        let favorite = FavoriteProduct(
-            id: product.id,
-            title: product.title,
-            price: product.price,
-            images: product.images
-        )
-        self.favorites.append(favorite)
+        self.favorites.append(product)
         
         save()
     }
     
     func getFavorites() {
-        self.favorites = userDefaultManager.getItem(key: .favorite, type: [FavoriteProduct].self) ?? []
+        self.favorites = userDefaultManager.getItem(key: .favorite, type: [Product].self) ?? []
     }
     
-    func removeFromFavorites(product: Product) {
-        if self.favorites.contains(where: {$0.id == product.id}) {
-            self.favorites.removeAll(where: {$0.id == product.id})
-        }
+    func removeFromFavorites(productId: Int) {
+        self.favorites.removeAll(where: {$0.id == productId })
         save()
     }
     

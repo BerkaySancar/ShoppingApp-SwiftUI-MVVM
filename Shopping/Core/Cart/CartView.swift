@@ -12,25 +12,26 @@ struct CartView: View {
     @StateObject private var viewModel = CartViewModel()
     
     var body: some View {
-        ZStack {
-            Color.grayBackground
-                .ignoresSafeArea()
-            
-            GeometryReader { proxy in
+        GeometryReader { proxy in
+            ZStack {
+                Color.grayBackground
+                    .ignoresSafeArea()
+                
                 VStack {
-                    if !viewModel.cartItems.isEmpty {
-                        ScrollView(.vertical) {
+                    ScrollView(.vertical) {
+                        if !viewModel.cartItems.isEmpty {
                             ForEach(viewModel.cartItems, id: \.id) { item in
                                 ItemRowView(item: item)
                             }
+                        } else {
+                            EmptyContentView(title: "Cart is empty.", description: "Add items to your cart to purchase.")
+                                .offset(y: proxy.size.height / 3)
                         }
-                    } else {
-                        Spacer()
-                        EmptyContentView(title: "Cart is empty.", description: "Add items to your cart to purchase.")
                     }
-                    Spacer()
-                    
-                    BottomView(proxy: proxy)
+             
+                    if !viewModel.cartItems.isEmpty {
+                        BottomView(proxy: proxy)
+                    }
                 }
             }
         }

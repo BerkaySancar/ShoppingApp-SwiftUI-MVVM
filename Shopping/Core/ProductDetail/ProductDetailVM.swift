@@ -6,29 +6,36 @@
 //
 
 import Foundation
+import DummyAPI
 
 final class ProductDetailVM: ObservableObject {
     
     var product: Product! {
         didSet {
-            self.isFav = favoritesManager.favorites.contains(where: { $0.id == product.id })
+            self.isFav = favoritesManager.isAlreadyFavorite(product: product)
         }
     }
-  
+    
     private let favoritesManager: FavoritesManagerProtocol
     private let cartManager: CartManagerProtocol
+    private let dummyAPIService: DummyAPIServiceProtocol
 
     @Published var isFav: Bool = false
     @Published var navigateCart = false
+    @Published var showActivity = false
+    @Published var showAlert = false
+    
+    private(set) var errorMessage: String = ""
     
     init(
         favoritesManager: FavoritesManagerProtocol = FavoritesManager(),
-        cartManager: CartManagerProtocol = CartManager()
+        cartManager: CartManagerProtocol = CartManager(),
+        dummyAPIService: DummyAPIServiceProtocol = DummyAPIService()
     ) {
         self.favoritesManager = favoritesManager
         self.cartManager = cartManager
+        self.dummyAPIService = dummyAPIService
     }
-    
     
     func addRemoveFavTapped(product: Product) {
         isFav.toggle()
@@ -36,7 +43,7 @@ final class ProductDetailVM: ObservableObject {
         favoritesManager.isAlreadyFavorite(
             product: product
         ) ? favoritesManager.removeFromFavorites(
-            product: product
+            productId: product.id
         ) : favoritesManager.addToFavorite(
             product: product
         )
