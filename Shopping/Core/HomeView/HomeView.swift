@@ -18,11 +18,15 @@ struct HomeView: View {
                 Color.appGrayBackground
                     .ignoresSafeArea()
                 
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 4) {
                     SearchFilterView()
+                    
                     if isScrollDown {
-                        CategorySliderView()
+                        VStack {
+                            CategorySliderView()
+                        }
                     }
+                    
                     ScrollView {
                         ProductsGridView()
                             .padding(.bottom, 70)
@@ -30,7 +34,8 @@ struct HomeView: View {
                     .simultaneousGesture(
                         DragGesture().onChanged {
                             self.isScrollDown = 0 < $0.translation.height
-                        } )
+                        }
+                    )
                     .scrollIndicators(.never)
                     .padding(.horizontal, 8)
                 }
@@ -54,7 +59,7 @@ extension HomeView {
         HStack {
             TextField("", text: $viewModel.searchText, prompt: Text("Search Product"))
                 .textFieldStyle(.plain)
-                .padding()
+                .padding(.all, 10)
                 .background(RoundedRectangle(cornerRadius: 16).foregroundStyle(.white))
                 .autocorrectionDisabled(true)
                 .padding(.leading, 8)
@@ -67,7 +72,7 @@ extension HomeView {
                 }
             } label: {
                 Image(systemName: "slider.vertical.3")
-                    .padding()
+                    .padding(.all, 12)
                     .background(RoundedRectangle(cornerRadius: 16).foregroundStyle(.appOrange))
                     .foregroundStyle(.white)
             }
@@ -84,7 +89,7 @@ extension HomeView {
                         viewModel.getCategoryProducts(category: category)
                         viewModel.selectedCategory = category
                     }
-                    .padding(.all, 12)
+                    .padding(.all, 10)
                     .background(RoundedRectangle(cornerRadius: 16)
                         .foregroundStyle(viewModel.selectedCategory == category ? .appOrange : .white))
                     .foregroundStyle(viewModel.selectedCategory == category ? .white : .appOrange)
@@ -98,7 +103,7 @@ extension HomeView {
     
     @ViewBuilder
     private func ProductsGridView() -> some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 130))]) {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 160))]) {
             ForEach(viewModel.content, id: \.id) { product in
                 NavigationLink {
                     ProductDetailView(product: product)
@@ -120,7 +125,7 @@ extension HomeView {
                                 }
                                 .offset(y: 20)
                             }
-                            .frame(width: 160, height: 160)
+                            .frame(width: 120, height: 120)
                         
                             Button {
                                 viewModel.favTapped(product: product)
@@ -132,7 +137,7 @@ extension HomeView {
                                     .foregroundStyle(.appOrange)
                                     .background(Capsule().foregroundStyle(.grayBackground))
                             }
-                            .offset(x: 68, y: -55)
+                            .offset(x: 68, y: -35)
                         }
                         
                         Text(product.title)
@@ -151,6 +156,9 @@ extension HomeView {
                                 }
                             }
                         }
+                    }
+                    .onAppear {
+                        viewModel.loadMoreProduct(productShown: product)
                     }
                     .foregroundStyle(.black)
                     .background(RoundedRectangle(cornerRadius: 16).foregroundStyle(.white))

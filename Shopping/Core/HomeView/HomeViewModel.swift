@@ -41,6 +41,7 @@ final class HomeViewModel: ObservableObject {
     //Variables
     private var cancellables = Set<AnyCancellable>()
     private(set) var errorMessage = ""
+    private var limit = 20
     
     //Init
     init(dummyService: DummyAPIServiceProtocol = DummyAPIService(),
@@ -66,6 +67,13 @@ final class HomeViewModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
+    
+    func loadMoreProduct(productShown: Product) {
+        if productShown.id == self.products.last?.id {
+            self.limit += 10
+            self.getProducts()
+        }
+    }
 }
 
 //MARK: - View Model Protocols
@@ -73,7 +81,7 @@ extension HomeViewModel: HomeViewModelProtocol {
     
     func getProducts() {
         self.showActivity = true
-        dummyService.getProducts { [weak self] results in
+        dummyService.getProducts(limit: self.limit) { [weak self] results in
             guard let self else { return }
             DispatchQueue.main.async {
                 self.showActivity = false
@@ -219,7 +227,7 @@ extension HomeViewModel: HomeViewModelProtocol {
     func favTapped(product: Product) {
         showActivity.toggle() // :)
         if favoritesManager.isAlreadyFavorite(product: product) {
-            favoritesManager.removeFromFavorites(product: product)
+            favoritesManager.removeFromFavorites(productId: product.id)
         } else {
             favoritesManager.addToFavorite(product: product)
         }

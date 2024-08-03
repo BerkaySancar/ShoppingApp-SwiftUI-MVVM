@@ -21,12 +21,12 @@ struct CustomProgressView: View {
                     ProgressView()
                         .controlSize(.regular)
                 }
-                .padding()
+                .padding(.all, 12)
                 .background(.background)
                 .clipShape(RoundedRectangle(cornerRadius: 18))
                 .overlay(RoundedRectangle(cornerRadius: 18)
                     .stroke(lineWidth: 1)
-                    .foregroundStyle(.gray))
+                    .foregroundStyle(.appOrange))
             }
             .allowsHitTesting(true)
         }

@@ -15,11 +15,15 @@ struct ProfileView: View {
         NavigationStack {
             ZStack {
                 List {
-                    Section("User") {
+                    Section {
                         TopSection()
+                    } header: {
+                        Text("User")
+                            .font(.headline)
+                            .foregroundStyle(.appOrange)
                     }
                     
-                    Section("User Informations") {
+                    Section {
                         InfosSection()
                     }
                     
