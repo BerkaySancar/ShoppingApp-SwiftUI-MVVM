@@ -8,12 +8,12 @@
 import Foundation
 
 public struct Products: Codable {
-    let products: [Product]
+    let products: [ProductDTO]
     let total, skip, limit: Int
 }
 
 // MARK: - Product
-public struct Product: Codable {
+public struct ProductDTO: Codable {
     public let id: Int
     public let title, description: String
     public let category: Category

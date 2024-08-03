@@ -6,10 +6,11 @@ enum DummyAPI: URLRequestConvertible {
     case login(LoginRequestDTO)
     case authUser(_ token: String)
     case refreshToken(RefreshTokenRequestDTO)
-    case products
+    case products(_ limit: Int)
     case searchProduct(_ query: String)
     case categories
     case getCategoryProducts(_ category: String)
+    case getProduct(_ id: Int)
     
     var baseURL: URL {
         .init(string: "https://dummyjson.com")!
@@ -33,6 +34,8 @@ enum DummyAPI: URLRequestConvertible {
             "products/category-list"
         case .getCategoryProducts(let category):
             "products/category/\(category)"
+        case .getProduct(let id):
+            "products/\(id)"
         }
     }
     
@@ -54,6 +57,8 @@ enum DummyAPI: URLRequestConvertible {
             .get
         case .getCategoryProducts:
             .get
+        case .getProduct:
+            .get
         }
     }
     
@@ -63,7 +68,7 @@ enum DummyAPI: URLRequestConvertible {
             ["Content-Type": "application/json"]
         case .authUser(let token):
             ["Authorization": "Bearer \(token)"]
-        case .categories, .products, .searchProduct, .getCategoryProducts, .addUser:
+        case .categories, .products, .searchProduct, .getCategoryProducts, .addUser, .getProduct:
             nil
             
         }
@@ -79,10 +84,13 @@ enum DummyAPI: URLRequestConvertible {
             tokenData.convertToDictionary()
         case .authUser:
             nil
-        case .products, .categories, .getCategoryProducts:
+        case .products(let limit):
+            ["limit": limit]
+        case .categories, .getCategoryProducts:
             nil
         case .searchProduct(let query):
             ["q": query]
+        case .getProduct: nil
         }
     }
 }
