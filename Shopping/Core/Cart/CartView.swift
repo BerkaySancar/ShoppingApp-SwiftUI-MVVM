@@ -33,6 +33,9 @@ struct CartView: View {
                         BottomView(proxy: proxy)
                     }
                 }
+                .onAppear {
+                    viewModel.onAppear()
+                }
             }
         }
     }
@@ -101,8 +104,8 @@ extension CartView {
                 }
                 .padding()
             }
-            Button {
-                
+            NavigationLink {
+                CompleteOrderView(order: viewModel.prepareOrder())
             } label: {
                 Text("Continue")
                     .padding(.top, 30)
@@ -114,7 +117,6 @@ extension CartView {
         }
         .background(.white)
     }
-
 }
 
 #Preview {

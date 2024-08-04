@@ -14,7 +14,7 @@ protocol CartManagerProtocol: AnyObject {
     func getCartItems()
     func removeFromCart(item: CartModel)
     func isAlreadyInCart(item: CartModel) -> Bool
-    func updateItem(item: CartModel, count: Int)
+    func removeAll()
 }
 
 final class CartManager: CartManagerProtocol, ObservableObject {
@@ -48,18 +48,18 @@ final class CartManager: CartManagerProtocol, ObservableObject {
         save()
     }
     
+    func removeAll() {
+        for item in cartItems {
+            removeFromCart(item: item)
+        }
+        save()
+    }
+    
     func isAlreadyInCart(item: CartModel) -> Bool {
         return self.cartItems.contains(where: {$0.id == item.id})
     }
     
     private func save() {
         self.userDefaultsManager.addItem(key: .cart, item: self.cartItems)
-    }
-    
-    func updateItem(item: CartModel, count: Int) {
-//        self.cartItems.filter { $0.id == item.id }.first?.count = count
-//        self.cartItems.filter { $0.id == item.id }.first?.price = total
-        
-//        save()
     }
 }

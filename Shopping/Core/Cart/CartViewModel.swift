@@ -51,4 +51,16 @@ final class CartViewModel: ObservableObject {
             orderTotal += item.price * Double(item.count)
         }
     }
+    
+    func prepareOrder() -> OrderModel {
+        return OrderModel(
+            total: self.orderTotal,
+            user: nil,
+            cart: self.cartItems
+        )
+    }
+    
+    func onAppear() {
+        cartManager.getCartItems()
+    }
 }
