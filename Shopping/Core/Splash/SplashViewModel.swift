@@ -77,6 +77,7 @@ final class SplashViewModel: ObservableObject {
                         }
                     }
                 } else {
+                    self.isAuthUser = false
                     self.shouldLogin = true
                 }
             } else {

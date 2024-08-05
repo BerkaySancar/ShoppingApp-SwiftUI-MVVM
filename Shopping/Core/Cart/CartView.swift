@@ -10,6 +10,7 @@ import SwiftUI
 struct CartView: View {
     
     @StateObject private var viewModel = CartViewModel()
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         GeometryReader { proxy in
@@ -26,6 +27,9 @@ struct CartView: View {
                         } else {
                             EmptyContentView(title: "Cart is empty.", description: "Add items to your cart to purchase.")
                                 .offset(y: proxy.size.height / 3)
+                                .onAppear() {
+                                    emptyContentOnAppear()
+                                }
                         }
                     }
              
@@ -37,6 +41,12 @@ struct CartView: View {
                     viewModel.onAppear()
                 }
             }
+        }
+    }
+    
+    private func emptyContentOnAppear() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            if viewModel.cartItems.isEmpty { self.dismiss() }
         }
     }
 }

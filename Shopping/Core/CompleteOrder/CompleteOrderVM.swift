@@ -14,7 +14,7 @@ final class CompleteOrderVM: ObservableObject {
     private let dummyAPIService: DummyAPIServiceProtocol
     private let cartManager: CartManagerProtocol
     
-    private(set) var user: UserModel?
+    @Published private(set) var user: UserModel?
     private var completedOrders: [OrderModel] = []
     
     var order: OrderModel? {
@@ -57,6 +57,10 @@ final class CompleteOrderVM: ObservableObject {
             self.alertMessage = "Order successfully created."
             self.showAlert.toggle()
         }
+    }
+    
+    func calculateOrderTotal() -> Double {
+        return (order?.total ?? 0.0) + 20.0
     }
     
     func getAuthUser() {

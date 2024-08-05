@@ -10,7 +10,6 @@ import SwiftUI
 struct CompleteOrderView: View {
     
     @Environment(\.dismiss) private var dismiss
-    
     @ObservedObject private var viewModel = CompleteOrderVM()
         
     init(order: OrderModel) {
@@ -33,6 +32,15 @@ struct CompleteOrderView: View {
                         PaymentView()
                     }
                 }
+                
+                Button("Complete Order") {
+                    viewModel.completeOrder()
+                }
+                .padding()
+                .foregroundStyle(.white)
+                .background(RoundedRectangle(cornerRadius: 16)
+                .foregroundStyle(.appOrange))
+                .offset(y: 280)
                 
                 CustomProgressView(isVisible: $viewModel.showActivity)
             }
@@ -66,8 +74,8 @@ extension CompleteOrderView {
     private func CreditCardView(proxy: GeometryProxy) -> some View {
         ZStack {
             RoundedRectangle(cornerRadius: 16)
-                .frame(width: (proxy.size.width / 1.2), height: 180)
-                .foregroundStyle(.cyan.opacity(0.55))
+                .frame(width: (proxy.size.width / 1.2), height: proxy.size.height / 4)
+                .foregroundStyle(.appOrange)
             
             HStack {
                 VStack(alignment: .leading) {
@@ -99,7 +107,7 @@ extension CompleteOrderView {
             HStack {
                 Text("Cart: ")
                 Spacer()
-                Text("$12313")
+                Text("$\(viewModel.order?.total ?? 0, format: .number.precision(.fractionLength(2)))")
             }
             
             HStack {
@@ -112,17 +120,9 @@ extension CompleteOrderView {
                 Text("Total: ")
                     .bold()
                 Spacer()
-                Text("$201313")
+                Text("$\(viewModel.calculateOrderTotal(), format: .number.precision(.fractionLength(2)))")
                     .bold()
             }
-            
-            Button("Complete Order") {
-                viewModel.completeOrder()
-            }
-            .padding()
-            .foregroundStyle(.white)
-            .background(RoundedRectangle(cornerRadius: 16)
-            .foregroundStyle(.appOrange))
         }
         .font(.callout)
     }

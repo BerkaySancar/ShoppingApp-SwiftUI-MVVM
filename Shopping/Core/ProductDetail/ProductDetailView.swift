@@ -152,34 +152,28 @@ extension ProductDetailView {
                 .frame(width: proxy.size.width, height: 1)
                 .foregroundStyle(.grayBackground)
             HStack {
-                HStack {
-                    Image(systemName: viewModel.isFav ? "heart.fill" : "heart")
-                        .foregroundStyle(.red)
-                    Button(viewModel.isFav ? "Remove Favorite" : "Add to Favorite") {
-                        viewModel.addRemoveFavTapped(product: viewModel.product)
-                    }
-                    .frame(minWidth: 128)
-                }
-                .foregroundStyle(.white)
-                .padding()
-                .background(RoundedRectangle(cornerRadius: 16)
-                    .foregroundStyle(.appOrange))
-                
-                Spacer()
-                HStack {
-                    Image(systemName: "cart")
-                    Button("Add to Cart") {
-                        viewModel.addToCartTapped()
-                    }
-                }
-                .foregroundStyle(.white)
-                .padding()
-                .background(RoundedRectangle(cornerRadius: 16)
-                    .foregroundStyle(.appOrange))
-                
-            }
-            .padding(.all, 8)
-            .padding(.horizontal, 8)
+                  Spacer()
+                  
+                  CustomButton(
+                      imageName: viewModel.isFav ? "heart.fill" : "heart",
+                      buttonText: viewModel.isFav ? "Remove Favorite" : "Add to Favorite",
+                      action: { viewModel.addRemoveFavTapped(product: viewModel.product) },
+                      imageTint: .red,
+                      width: 128
+                  )
+                  
+                  CustomButton(
+                      imageName: "cart",
+                      buttonText: "Add to Cart",
+                      action: { viewModel.addToCartTapped() },
+                      imageTint: .white,
+                      width: 128
+                  )
+                  
+                  Spacer()
+              }
+              .padding(.all, 8)
+              .padding(.horizontal, 8)
         }
     }
 }

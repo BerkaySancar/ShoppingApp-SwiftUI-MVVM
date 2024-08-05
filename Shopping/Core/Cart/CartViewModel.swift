@@ -19,7 +19,7 @@ final class CartViewModel: ObservableObject {
         }
     }
     @Published var orderTotal: Double = 0
- 
+    
     init(cartManager: CartManagerProtocol = CartManager()) {
         self.cartManager = cartManager
         
@@ -33,7 +33,7 @@ final class CartViewModel: ObservableObject {
                 self?.cartItems = items
             }
             .store(in: &cancellables)
-     }
+    }
     
     func stepperValueChanged(item: CartModel, count: Int) {
         if count == 0 {
@@ -64,3 +64,4 @@ final class CartViewModel: ObservableObject {
         cartManager.getCartItems()
     }
 }
+

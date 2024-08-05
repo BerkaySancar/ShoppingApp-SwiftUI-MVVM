@@ -7,6 +7,8 @@
 
 import Foundation
 
+//MARK: Model with ObservableObject and Codable implemets sample
+
 class CartModel: ObservableObject, Codable {
     
     enum CodingKeys: CodingKey {

@@ -69,20 +69,15 @@ extension SignUpView {
             SecureField("", text: $viewModel.password, prompt: Text("Password"))
                 .modifier(AppTextFieldModifier())
             
-            Button {
-                viewModel.createUserTapped()
-            } label: {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 8)
-                        .frame(width: 120, height: 48)
-                        .foregroundStyle(Color.appPrimaryColor)
-                    Text("Create")
-                        .foregroundStyle(.background)
-                        .font(.title3)
-                }
-            }
-            .padding(.top, 26)
-            
+            CustomButton(
+                imageName: nil,
+                buttonText: "Create",
+                action: viewModel.createUserTapped,
+                imageTint: nil,
+                width: 100
+            )
+            .padding(.top)
+        
             Button {
                 dismiss()
             } label: {

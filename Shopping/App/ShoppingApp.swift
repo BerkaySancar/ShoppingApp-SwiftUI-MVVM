@@ -19,6 +19,7 @@ struct ShoppingApp: App {
     init() {
         pageControlAppearence()
         navBarAppearance()
+        alertViewButtonTintAppearance()
     }
     
     private func pageControlAppearence() {
@@ -31,5 +32,9 @@ struct ShoppingApp: App {
         appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.appOrange]
         UIBarButtonItem.appearance().tintColor = UIColor.appOrange
         UINavigationBar.appearance().standardAppearance = appearance
+    }
+    
+    private func alertViewButtonTintAppearance() {
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .appOrange
     }
 }

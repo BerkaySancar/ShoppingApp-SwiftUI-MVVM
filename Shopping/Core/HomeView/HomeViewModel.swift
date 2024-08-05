@@ -225,7 +225,7 @@ extension HomeViewModel: HomeViewModelProtocol {
     }
     
     func favTapped(product: Product) {
-        showActivity.toggle() // :)
+        showActivity.toggle()
         if favoritesManager.isAlreadyFavorite(product: product) {
             favoritesManager.removeFromFavorites(productId: product.id)
         } else {

@@ -69,19 +69,14 @@ extension LoginView {
                         prompt: Text("Password"))
                 .modifier(AppTextFieldModifier())
             
-            Button {
-                viewModel.loginTapped()
-            } label: {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 8)
-                        .frame(width: 120, height: 48)
-                        .foregroundStyle(Color.appPrimaryColor)
-                    Text("Login")
-                        .foregroundStyle(.background)
-                        .font(.title3)
-                }
-            }
-            .padding(.top, 26)
+            CustomButton(
+                imageName: nil,
+                buttonText: "Login",
+                action: {viewModel.loginTapped()},
+                imageTint: nil,
+                width: 100
+            )
+            .padding(.top)
             
             Button {
                 viewModel.signUpTapped()
