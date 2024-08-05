@@ -25,6 +25,9 @@
 - Generics
 - MVVM
 
+## ToDo's
+- Programmatic navigation
+
 ## Setup
 - Clone the repository:
   git clone https://github.com/BerkaySancar/ShoppingApp-SwiftUI-MVVM.git
