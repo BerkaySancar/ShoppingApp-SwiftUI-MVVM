@@ -8,23 +8,12 @@
 import Foundation
 import SystemConfiguration
 
-@available(iOS 15.0, *)
 final class ServiceManager {
     
     private let decoder = JSONDecoder()
     
     private var isReachable: Bool {
-        return checkReachability()
-    }
-    
-    private func checkReachability() -> Bool {
-        if let reachability = SCNetworkReachabilityCreateWithName(nil, "www.apple.com") {
-            var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags()
-            SCNetworkReachabilityGetFlags(reachability, &flags)
-            
-            return flags.contains(.reachable) && !flags.contains(.connectionRequired)
-        }
-        return false
+        return Reachability.isNetworkReachable()
     }
     
     func request<T: Codable>(_ request: URLRequestConvertible, type: T.Type, completion: @escaping (Result<T?, ServiceError>) -> Void) {
