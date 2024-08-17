@@ -10,7 +10,7 @@ import SwiftUI
 struct CartView: View {
     
     @StateObject private var viewModel = CartViewModel()
-    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var coordinator: Coordinator
     
     var body: some View {
         GeometryReader { proxy in
@@ -46,7 +46,7 @@ struct CartView: View {
     
     private func emptyContentOnAppear() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            if viewModel.cartItems.isEmpty { self.dismiss() }
+            if viewModel.cartItems.isEmpty { coordinator.pop() }
         }
     }
 }
@@ -114,16 +114,17 @@ extension CartView {
                 }
                 .padding()
             }
-            NavigationLink {
-                CompleteOrderView(order: viewModel.prepareOrder())
+      
+            Button {
+                coordinator.push(.completeOrder(viewModel.prepareOrder()))
             } label: {
                 Text("Continue")
                     .padding(.top, 30)
                     .font(.headline)
+                    .frame(width: proxy.size.width, height: 40)
+                    .background(.appOrange)
+                    .foregroundStyle(.white)
             }
-            .frame(width: proxy.size.width, height: 40)
-            .background(.appOrange)
-            .foregroundStyle(.white)
         }
         .background(.white)
     }
@@ -131,4 +132,5 @@ extension CartView {
 
 #Preview {
     CartView()
+        .environmentObject(Coordinator())
 }

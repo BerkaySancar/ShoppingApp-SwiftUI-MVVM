@@ -10,6 +10,7 @@ import SwiftUI
 struct ProductDetailView: View {
     
     @ObservedObject private var viewModel = ProductDetailVM()
+    @EnvironmentObject private var coordinator: Coordinator
     
     @State private var showCart = false
     
@@ -18,21 +19,19 @@ struct ProductDetailView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            GeometryReader { proxy in
-                VStack {
-                    ScrollView(.vertical) {
-                        ProductImageTabView(proxy: proxy)
-                        RatingStockView()
-                        ProductInfoView(proxy: proxy)
-                    }
-                    BottomView(proxy: proxy)
+        GeometryReader { proxy in
+            VStack {
+                ScrollView(.vertical) {
+                    ProductImageTabView(proxy: proxy)
+                    RatingStockView()
+                    ProductInfoView(proxy: proxy)
                 }
+                BottomView(proxy: proxy)
             }
         }
-        .navigationDestination(isPresented: $viewModel.navigateCart) {
-            CartView()
-        }
+        //        .navigationDestination(isPresented: $viewModel.navigateCart) {
+        //            CartView()
+        //        }
     }
 }
 
@@ -165,7 +164,7 @@ extension ProductDetailView {
                   CustomButton(
                       imageName: "cart",
                       buttonText: "Add to Cart",
-                      action: { viewModel.addToCartTapped() },
+                      action: { viewModel.addToCartTapped { coordinator.push(.cart) } },
                       imageTint: .white,
                       width: 128
                   )

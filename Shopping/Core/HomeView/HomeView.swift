@@ -9,39 +9,38 @@ import SwiftUI
 
 struct HomeView: View {
     
+    @EnvironmentObject private var coordinator: Coordinator
     @StateObject private var viewModel = HomeViewModel()
     @State private var isScrollDown = true
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Color.appGrayBackground
-                    .ignoresSafeArea()
+        ZStack {
+            Color.appGrayBackground
+                .ignoresSafeArea()
+            
+            VStack(alignment: .leading, spacing: 4) {
+                SearchFilterView()
                 
-                VStack(alignment: .leading, spacing: 4) {
-                    SearchFilterView()
-                    
-                    if isScrollDown {
-                        VStack {
-                            CategorySliderView()
-                        }
+                if isScrollDown {
+                    VStack {
+                        CategorySliderView()
                     }
-                    
-                    ScrollView {
-                        ProductsGridView()
-                            .padding(.bottom, 70)
-                    }
-                    .simultaneousGesture(
-                        DragGesture().onChanged {
-                            self.isScrollDown = 0 < $0.translation.height
-                        }
-                    )
-                    .scrollIndicators(.never)
-                    .padding(.horizontal, 8)
                 }
                 
-                CustomProgressView(isVisible: $viewModel.showActivity)
+                ScrollView {
+                    ProductsGridView()
+                        .padding(.bottom, 70)
+                }
+                .simultaneousGesture(
+                    DragGesture().onChanged {
+                        self.isScrollDown = 0 < $0.translation.height
+                    }
+                )
+                .scrollIndicators(.never)
+                .padding(.horizontal, 8)
             }
+            
+            CustomProgressView(isVisible: $viewModel.showActivity)
         }
         .onAppear {
             viewModel.onAppear()
@@ -100,68 +99,72 @@ extension HomeView {
         .scrollIndicators(.never, axes: .horizontal)
         .frame(height: 60)
     }
-    
+ 
     @ViewBuilder
     private func ProductsGridView() -> some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 160))]) {
             ForEach(viewModel.content, id: \.id) { product in
-                NavigationLink {
-                    ProductDetailView(product: product)
-                } label: {
-                    VStack(spacing: 0) {
-                        ZStack {
-                            AsyncImage(url: .init(string: product.images.first!)!) { image in
-                                image.resizable()
-                                    .scaledToFit()
-                            } placeholder: {
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 0)
-                                        .foregroundStyle(.grayBackground)
-                                        .frame(width: 80, height: 80)
+                ProductCell(viewModel: self.viewModel, product: product)
+                .onAppear {
+                    viewModel.loadMoreProduct(productShown: product)
+                }
+                .background(RoundedRectangle(cornerRadius: 16).foregroundStyle(.white))
+                .onTapGesture {
+                    coordinator.push(.productDetail(product))
+                }
+            }
+        }
+    }
+    
+    
+    @ViewBuilder
+    private func ProductCell(viewModel: HomeViewModel, product: Product) -> some View {
+        VStack(spacing: 0) {
+            ZStack {
+                AsyncImage(url: .init(string: product.images.first!)!) { image in
+                    image.resizable()
+                        .scaledToFit()
+                } placeholder: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 0)
+                            .foregroundStyle(.grayBackground)
+                            .frame(width: 80, height: 80)
+                        
+                        Image(systemName: "photo")
+                            .foregroundStyle(.white)
+                            .font(.system(size: 40))
+                    }
+                    .offset(y: 20)
+                }
+                .frame(width: 120, height: 120)
                 
-                                    Image(systemName: "photo")
-                                        .foregroundStyle(.white)
-                                        .font(.system(size: 40))
-                                }
-                                .offset(y: 20)
-                            }
-                            .frame(width: 120, height: 120)
-                        
-                            Button {
-                                viewModel.favTapped(product: product)
-                            } label: {
-                                Image(systemName: viewModel.favoritesManager.favorites.contains(where: { $0.id == product.id}) ? "heart.fill" : "heart")
-                                    .font(.system(size: 24))
-                                    .padding()
-                                    .frame(width: 40, height: 40)
-                                    .foregroundStyle(.appOrange)
-                                    .background(Capsule().foregroundStyle(.grayBackground))
-                            }
-                            .offset(x: 68, y: -35)
-                        }
-                        
-                        Text(product.title)
-                            .frame(maxWidth: .infinity, minHeight: 60)
-                            .lineLimit(2)
-                            .padding(.horizontal, 4)
-                        Text("$\(product.price, format: .number.precision(.fractionLength(2)))")
-                            .bold()
-                        
-                        LazyHStack(spacing: 1) {
-                            ForEach(0..<Int(product.rating), id: \.self) { num in
-                                HStack {
-                                    Image(systemName: "star.fill")
-                                        .foregroundStyle(.yellow)
-                                        .padding([.top, .bottom], 8)
-                                }
-                            }
-                        }
+                Button {
+                    viewModel.favTapped(product: product)
+                } label: {
+                    Image(systemName: viewModel.favoritesManager.favorites.contains(where: { $0.id == product.id}) ? "heart.fill" : "heart")
+                        .font(.system(size: 24))
+                        .padding()
+                        .frame(width: 40, height: 40)
+                        .foregroundStyle(.appOrange)
+                        .background(Capsule().foregroundStyle(.grayBackground))
+                }
+                .offset(x: 68, y: -35)
+            }
+            
+            Text(product.title)
+                .frame(maxWidth: .infinity, minHeight: 60)
+                .lineLimit(2)
+                .padding(.horizontal, 4)
+            Text("$\(product.price, format: .number.precision(.fractionLength(2)))")
+                .bold()
+            
+            LazyHStack(spacing: 1) {
+                ForEach(0..<Int(product.rating), id: \.self) { num in
+                    HStack {
+                        Image(systemName: "star.fill")
+                            .foregroundStyle(.yellow)
+                            .padding([.top, .bottom], 8)
                     }
-                    .onAppear {
-                        viewModel.loadMoreProduct(productShown: product)
-                    }
-                    .foregroundStyle(.black)
-                    .background(RoundedRectangle(cornerRadius: 16).foregroundStyle(.white))
                 }
             }
         }
@@ -170,4 +173,5 @@ extension HomeView {
 
 #Preview {
     HomeView()
+        .environmentObject(Coordinator())
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct OrderModel: Codable {
+struct OrderModel: Codable, Hashable {
     var id = UUID().uuidString
     let total: Double
     var user: UserModel?

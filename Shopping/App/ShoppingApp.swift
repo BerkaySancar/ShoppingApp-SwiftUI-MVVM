@@ -10,9 +10,12 @@ import SwiftUI
 @main
 struct ShoppingApp: App {
     
+    @StateObject private var coordinator: Coordinator = Coordinator()
+    
     var body: some Scene {
         WindowGroup {
             SplashView()
+                .environmentObject(self.coordinator)
         }
     }
     

@@ -10,26 +10,17 @@ import SwiftUI
 struct LoginView: View {
     
     @StateObject private var viewModel = LoginViewModel()
+    @EnvironmentObject private var coordinator: Coordinator
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                TopView()
-                InputView()
-                CustomProgressView(isVisible: $viewModel.showActivity)
-            }
-            .background(Color.appGrayBackground)
-            .navigationDestination(isPresented: $viewModel.isLoggedIn) {
-                MainTabbarView()
-                    .navigationBarBackButtonHidden()
-            }
-            .navigationDestination(isPresented: $viewModel.showSignup) {
-                SignUpView()
-                    .navigationBarBackButtonHidden()
-            }
-            .alert(isPresented: $viewModel.isPresentAlert) {
-                Alert(title: Text(viewModel.errorMessage))
-            }
+        ZStack {
+            TopView()
+            InputView()
+            CustomProgressView(isVisible: $viewModel.showActivity)
+        }
+        .background(Color.appGrayBackground)
+        .alert(isPresented: $viewModel.isPresentAlert) {
+            Alert(title: Text(viewModel.errorMessage))
         }
     }
 }
@@ -72,14 +63,20 @@ extension LoginView {
             CustomButton(
                 imageName: nil,
                 buttonText: "Login",
-                action: {viewModel.loginTapped()},
+                action: {
+                    viewModel.loginTapped { isSuccess in
+                        if isSuccess {
+                            coordinator.push(.tabBar)
+                        }
+                    }
+                },
                 imageTint: nil,
                 width: 100
             )
             .padding(.top)
             
             Button {
-                viewModel.signUpTapped()
+                coordinator.push(.signup)
             } label: {
                 HStack {
                     Text("Don't have an account?")
@@ -101,4 +98,5 @@ extension LoginView {
 
 #Preview {
     LoginView()
+        .environmentObject(Coordinator())
 }

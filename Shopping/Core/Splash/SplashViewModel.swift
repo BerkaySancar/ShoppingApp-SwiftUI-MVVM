@@ -43,7 +43,7 @@ final class SplashViewModel: ObservableObject {
         return false
     }
     
-    func manageSplashAction() {
+    func manageSplashAction(completion: @escaping (_ isAuth: Bool) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
             guard let self else { return }
             if self.isNetworkReachable {
@@ -52,33 +52,32 @@ final class SplashViewModel: ObservableObject {
                         DispatchQueue.main.async {
                             switch results {
                             case .success(_):
-                                self.isAuthUser = true
+                                completion(true)
                             case .failure(let failure):
                                 switch failure {
                                 case .unauthorized:
                                     if let refreshToken = self.userDefaultsManager.getItem(key: .refreshToken, type: String.self) {
-                                        self.dummyAPIService.refreshToken(refreshToken: refreshToken, expiresInMins: 1) { results in
+                                        self.dummyAPIService.refreshToken(refreshToken: refreshToken, expiresInMins: 10) { results in
                                             DispatchQueue.main.async {
                                                 switch results {
                                                 case .success(let success):
                                                     self.userDefaultsManager.addItem(key: .authToken, item: success?.token)
                                                     self.userDefaultsManager.addItem(key: .refreshToken, item: success?.refreshToken)
-                                                    self.isAuthUser = true
+                                                    completion(true)
                                                 case .failure(_):
-                                                    self.shouldLogin = true
+                                                    completion(false)
                                                 }
                                             }
                                         }
                                     }
                                 default:
-                                    self.shouldLogin = true
+                                    completion(false)
                                 }
                             }
                         }
                     }
                 } else {
-                    self.isAuthUser = false
-                    self.shouldLogin = true
+                    completion(false)
                 }
             } else {
                 self.presentConnectionAlert.toggle()

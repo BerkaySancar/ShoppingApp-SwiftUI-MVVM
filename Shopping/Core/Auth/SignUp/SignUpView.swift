@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SignUpView: View {
     
-    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var coordinator: Coordinator
     @StateObject private var viewModel = SignUpViewModel()
  
     var body: some View {
@@ -32,7 +32,7 @@ struct SignUpView: View {
                     title: Text("User successfully created."),
                     message: Text("Please login."),
                     dismissButton: .cancel(Text("Done"), action: {
-                        dismiss()
+                        coordinator.pop()
                     })
                 )
             case .emptyInfo:
@@ -79,7 +79,7 @@ extension SignUpView {
             .padding(.top)
         
             Button {
-                dismiss()
+                coordinator.pop()
             } label: {
                 HStack {
                     Text("Already have an account?")
@@ -128,4 +128,5 @@ extension SignUpView {
 
 #Preview {
     SignUpView()
+        .environmentObject(Coordinator())
 }

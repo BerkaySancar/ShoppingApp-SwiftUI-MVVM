@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserModel: Codable {
+struct UserModel: Codable, Hashable {
     let id: Int
     let username: String
     let email: String
@@ -31,7 +31,7 @@ struct UserModel: Codable {
     )
 }
 
-struct Address: Codable {
+struct Address: Codable, Hashable {
     let address: String
     let city: String
     let state: String
@@ -39,12 +39,12 @@ struct Address: Codable {
     let coordinates: Coordinate
 }
 
-struct Coordinate: Codable {
+struct Coordinate: Codable, Hashable {
     let lat: Double
     let lng: Double
 }
 
-struct Bank: Codable {
+struct Bank: Codable, Hashable {
     let cardExpire: String
     let cardNumber: String
     let cardType: String

@@ -10,7 +10,7 @@ import Foundation
 //MARK: Model with ObservableObject and Codable implemets sample
 
 class CartModel: ObservableObject, Codable {
-    
+  
     enum CodingKeys: CodingKey {
         case id, title, price, brand, images, count
     }
@@ -54,5 +54,23 @@ class CartModel: ObservableObject, Codable {
         self.brand = try container.decode(String.self, forKey: .brand)
         self.images = try container.decode([String].self, forKey: .images)
         self.count = try container.decode(Int.self, forKey: .count)
+    }
+}
+
+extension CartModel: Hashable {
+    static func == (lhs: CartModel, rhs: CartModel) -> Bool {
+        return lhs.id == rhs.id &&
+               lhs.title == rhs.title &&
+               lhs.price == rhs.price &&
+               lhs.brand == rhs.brand &&
+               lhs.images == rhs.images
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(title)
+        hasher.combine(price)
+        hasher.combine(brand)
+        hasher.combine(images)
     }
 }

@@ -21,7 +21,6 @@ final class ProductDetailVM: ObservableObject {
     private let dummyAPIService: DummyAPIServiceProtocol
 
     @Published var isFav: Bool = false
-    @Published var navigateCart = false
     @Published var showActivity = false
     @Published var showAlert = false
     
@@ -49,7 +48,7 @@ final class ProductDetailVM: ObservableObject {
         )
     }
     
-    func addToCartTapped() {
+    func addToCartTapped(completion: @escaping () -> Void) {
         let cartModel = CartModel()
         cartModel.id = product.id
         cartModel.count = product.count
@@ -61,6 +60,6 @@ final class ProductDetailVM: ObservableObject {
         
         cartManager.addToCart(item: cartModel)
         
-        navigateCart.toggle()
+        completion()
     }
 }

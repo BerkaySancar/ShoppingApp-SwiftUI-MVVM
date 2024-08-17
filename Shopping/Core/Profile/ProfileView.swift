@@ -9,40 +9,36 @@ import SwiftUI
 
 struct ProfileView: View {
    
+    @EnvironmentObject private var coordinator: Coordinator
     @StateObject private var viewModel = ProfileViewModel()
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                List {
-                    Section {
-                        TopSection()
-                    } header: {
-                        Text("User")
-                            .font(.headline)
-                            .foregroundStyle(.appOrange)
-                    }
-                    
-                    Section {
-                        InfosSection()
-                    }
-                    
-                    Section("") {
-                        LogOutRemoveSection()
-                    }
+        ZStack {
+            List {
+                Section {
+                    TopSection()
+                } header: {
+                    Text("User")
+                        .font(.headline)
+                        .foregroundStyle(.appOrange)
                 }
                 
-                CustomProgressView(isVisible: $viewModel.showActivity)
+                Section {
+                    InfosSection()
+                }
+                
+                Section("") {
+                    LogOutRemoveSection()
+                }
             }
-            .onAppear {
-                viewModel.getCompletedOrders()
-            }
-            .alert(isPresented: $viewModel.showAlert) {
-                Alert(title: Text(viewModel.errorMessage))
-            }
-            .navigationDestination(isPresented: $viewModel.turnLogin) {
-                LoginView().navigationBarBackButtonHidden()
-            }
+            
+            CustomProgressView(isVisible: $viewModel.showActivity)
+        }
+        .onAppear {
+            viewModel.getCompletedOrders()
+        }
+        .alert(isPresented: $viewModel.showAlert) {
+            Alert(title: Text(viewModel.errorMessage))
         }
     }
 }
@@ -137,7 +133,9 @@ Currency: \(viewModel.user?.bank.currency ?? "")
     @ViewBuilder
     private func LogOutRemoveSection() -> some View {
         Button {
-            viewModel.signOutTapped()
+            viewModel.signOutTapped {
+                coordinator.popToRoot()
+            }
         } label: {
             HStack(spacing: 12) {
                 Image(systemName: "rectangle.portrait.and.arrow.right")
@@ -168,4 +166,5 @@ Currency: \(viewModel.user?.bank.currency ?? "")
 
 #Preview {
     ProfileView()
+        .environmentObject(Coordinator())
 }

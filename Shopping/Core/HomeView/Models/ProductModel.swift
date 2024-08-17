@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Product: Codable, Identifiable {
+struct Product: Codable, Hashable {
     let id: Int
     let title: String
     let description: String

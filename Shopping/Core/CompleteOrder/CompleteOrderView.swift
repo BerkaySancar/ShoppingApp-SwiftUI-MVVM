@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CompleteOrderView: View {
     
-    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var coordinator: Coordinator
     @ObservedObject private var viewModel = CompleteOrderVM()
         
     init(order: OrderModel) {
@@ -47,7 +47,7 @@ struct CompleteOrderView: View {
             .alert(isPresented: $viewModel.showAlert) {
                 Alert(
                     title: Text(viewModel.alertMessage),
-                    dismissButton: .cancel(Text("Done"), action: { self.dismiss() }))
+                    dismissButton: .cancel(Text("Done"), action: { coordinator.pop() }))
             }
         }
     }
@@ -130,5 +130,6 @@ extension CompleteOrderView {
 
 #Preview {
     CompleteOrderView(order: .init(total: 333, user: .sampleUser, cart: [.sampleCartModel]))
+        .environmentObject(Coordinator())
 }
 

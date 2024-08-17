@@ -16,7 +16,6 @@ final class ProfileViewModel: ObservableObject {
     @Published var showActivity = false
     @Published var user: UserModel?
     @Published var showAlert = false
-    @Published var turnLogin = false
     @Published var completedOrders: [OrderModel] = []
     
     private(set) var errorMessage: String = ""
@@ -90,10 +89,10 @@ final class ProfileViewModel: ObservableObject {
         }
     }
     
-    func signOutTapped() {
+    func signOutTapped(completion: @escaping () -> Void) {
         userDefaultsManager.removeKeyData(key: .authToken)
         userDefaultsManager.removeKeyData(key: .refreshToken)
-        self.turnLogin.toggle()
+        completion()
     }
     
     func getCompletedOrders() {

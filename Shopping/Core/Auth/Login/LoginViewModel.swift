@@ -9,7 +9,7 @@ import Foundation
 import DummyAPI
 
 protocol LoginViewModelProtocol {
-    func loginTapped()
+    func loginTapped(completion: @escaping (_ isSuccess: Bool) -> Void)
     func signUpTapped()
 }
 
@@ -22,7 +22,6 @@ final class LoginViewModel: ObservableObject {
     //Published variables
     @Published var username: String = "emilys"
     @Published var password: String = "emilyspass"
-    @Published var isLoggedIn = false
     @Published var isPresentAlert = false
     @Published var showSignup = false
     @Published var showActivity = false
@@ -41,7 +40,7 @@ final class LoginViewModel: ObservableObject {
 //MARK: ViewModel Protocols
 extension LoginViewModel: LoginViewModelProtocol {
     
-    func loginTapped() {
+    func loginTapped(completion: @escaping (_ isSuccess: Bool) -> Void) {
         if !username.isEmpty && !password.isEmpty {
             self.showActivity = true
             service.login(username: self.username, password: self.password) { [weak self] results in
@@ -50,7 +49,7 @@ extension LoginViewModel: LoginViewModelProtocol {
                     self.showActivity = false
                     switch results {
                     case .success(let login):
-                        self.isLoggedIn.toggle()
+                        completion(true)
                         self.userDefaultManager.addItem(key: .authToken, item: login?.token)
                         self.userDefaultManager.addItem(key: .refreshToken, item: login?.refreshToken)
                     case .failure(let failure):

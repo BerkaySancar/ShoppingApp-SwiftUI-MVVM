@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FavoritesView: View {
     
+    @EnvironmentObject private var coordinator: Coordinator
     @StateObject private var viewModel = FavoritesViewModel()
     
     var body: some View {
@@ -17,11 +18,10 @@ struct FavoritesView: View {
                 List {
                     Section {
                         ForEach(viewModel.favorites, id: \.id) { favorite in
-                            NavigationLink {
-                                ProductDetailView(product: favorite)
-                            } label: {
-                                ItemRow(favorite: favorite)
-                            }
+                            ItemRow(favorite: favorite)
+                                .onTapGesture {
+                                    coordinator.push(.productDetail(favorite))
+                                }
                         }
                         .onDelete { indexSet in
                             viewModel.onDelete(indexSet: indexSet)
@@ -81,4 +81,5 @@ extension FavoritesView {
 
 #Preview {
     FavoritesView()
+        .environmentObject(Coordinator())
 }
