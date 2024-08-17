@@ -24,9 +24,10 @@
 - UserDefaults
 - Generics
 - MVVM
+- Programmatic Navigation
 
 ## ToDo's
-- Programmatic navigation
+- Programmatic navigation ( Completed ✅ )
 
 ## Setup
 - Clone the repository:
