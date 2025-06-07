@@ -15,6 +15,6 @@ public struct LoginResponseDTO: Codable {
     public let lastName: String
     public let gender: String
     public let image: String
-    public let token: String
+    public let accessToken: String
     public let refreshToken: String
 }

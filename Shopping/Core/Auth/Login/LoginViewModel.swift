@@ -50,7 +50,7 @@ extension LoginViewModel: LoginViewModelProtocol {
                     switch results {
                     case .success(let login):
                         completion(true)
-                        self.userDefaultManager.addItem(key: .authToken, item: login?.token)
+                        self.userDefaultManager.addItem(key: .authToken, item: login?.accessToken)
                         self.userDefaultManager.addItem(key: .refreshToken, item: login?.refreshToken)
                     case .failure(let failure):
                         self.errorMessage = failure.errorDescription
