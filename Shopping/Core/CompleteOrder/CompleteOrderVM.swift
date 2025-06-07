@@ -102,13 +102,15 @@ final class CompleteOrderVM: ObservableObject {
                         if failure == .unauthorized {
                             if let refreshToken = self.userDefaultsManager.getItem(key: .refreshToken, type: String.self) {
                                 self.dummyAPIService.refreshToken(refreshToken: refreshToken, expiresInMins: 10) { results in
-                                    switch results {
-                                    case .success(let success):
-                                        self.userDefaultsManager.addItem(key: .authToken, item: success?.token)
-                                        self.userDefaultsManager.addItem(key: .refreshToken, item: success?.refreshToken)
-                                    case .failure(let failure):
-                                        self.showAlert.toggle()
-                                        self.alertMessage = failure.errorDescription
+                                    DispatchQueue.main.async {
+                                        switch results {
+                                        case .success(let success):
+                                            self.userDefaultsManager.addItem(key: .authToken, item: success?.token)
+                                            self.userDefaultsManager.addItem(key: .refreshToken, item: success?.refreshToken)
+                                        case .failure(let failure):
+                                            self.showAlert.toggle()
+                                            self.alertMessage = failure.errorDescription
+                                        }
                                     }
                                 }
                             }
